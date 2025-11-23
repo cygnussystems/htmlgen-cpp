@@ -166,6 +166,68 @@ namespace web {
             this->copy(_e);
         }
 
+        element::element(element&& _e) noexcept
+            :
+            m_page_ptr(_e.m_page_ptr),
+            m_parent_ptr(_e.m_parent_ptr),
+            m_type(_e.m_type),
+            m_is_container(_e.m_is_container),
+            m_has_closing_tag(_e.m_has_closing_tag),
+            m_is_head_element(_e.m_is_head_element),
+            m_newline_after_tag(_e.m_newline_after_tag),
+            m_newline_after_element(_e.m_newline_after_element),
+            m_class_attr(std::move(_e.m_class_attr)),
+            m_id_attr(std::move(_e.m_id_attr)),
+            m_data_id_attr(std::move(_e.m_data_id_attr)),
+            m_type_attr(std::move(_e.m_type_attr)),
+            m_role_attr(std::move(_e.m_role_attr)),
+            m_style_attr(std::move(_e.m_style_attr)),
+            m_src_attr(std::move(_e.m_src_attr)),
+            m_alt_attr(std::move(_e.m_alt_attr)),
+            m_width_attr(std::move(_e.m_width_attr)),
+            m_height_attr(std::move(_e.m_height_attr)),
+            m_href_attr(std::move(_e.m_href_attr)),
+            m_rel_attr(std::move(_e.m_rel_attr)),
+            m_other_attr(std::move(_e.m_other_attr)),
+            m_elements(std::move(_e.m_elements)) {
+            // Reset moved-from object
+            _e.m_page_ptr = nullptr;
+            _e.m_parent_ptr = nullptr;
+            _e.m_type = undefined_t;
+        }
+
+        element& element::operator=(element&& _e) noexcept {
+            if (this != &_e) {
+                m_page_ptr = _e.m_page_ptr;
+                m_parent_ptr = _e.m_parent_ptr;
+                m_type = _e.m_type;
+                m_is_container = _e.m_is_container;
+                m_has_closing_tag = _e.m_has_closing_tag;
+                m_is_head_element = _e.m_is_head_element;
+                m_newline_after_tag = _e.m_newline_after_tag;
+                m_newline_after_element = _e.m_newline_after_element;
+                m_class_attr = std::move(_e.m_class_attr);
+                m_id_attr = std::move(_e.m_id_attr);
+                m_data_id_attr = std::move(_e.m_data_id_attr);
+                m_type_attr = std::move(_e.m_type_attr);
+                m_role_attr = std::move(_e.m_role_attr);
+                m_style_attr = std::move(_e.m_style_attr);
+                m_src_attr = std::move(_e.m_src_attr);
+                m_alt_attr = std::move(_e.m_alt_attr);
+                m_width_attr = std::move(_e.m_width_attr);
+                m_height_attr = std::move(_e.m_height_attr);
+                m_href_attr = std::move(_e.m_href_attr);
+                m_rel_attr = std::move(_e.m_rel_attr);
+                m_other_attr = std::move(_e.m_other_attr);
+                m_elements = std::move(_e.m_elements);
+                // Reset moved-from object
+                _e.m_page_ptr = nullptr;
+                _e.m_parent_ptr = nullptr;
+                _e.m_type = undefined_t;
+            }
+            return *this;
+        }
+
         void element::copy(const element& _other) {
             m_type = _other.m_type;
             m_class_attr = _other.m_class_attr;
@@ -430,6 +492,18 @@ namespace web {
             return *ele_ptr;
         }
 
+        html::element& element::add(html::element&& _e) {
+            if(!m_is_container) {
+                throw std::runtime_error("cannot add element - this element is not a container!");
+            }
+            // Create a copy via make_copy which handles polymorphic types correctly
+            // then move from the original to preserve any data
+            element* ele_ptr = _e.make_copy();
+            ele_ptr->m_parent_ptr = this;
+            m_elements.push_back(std::unique_ptr<element>(ele_ptr));
+            return *ele_ptr;
+        }
+
         html::element& element::add(html::element_group& _e) {
             if(!m_is_container) {
                 throw std::runtime_error("cannot add element - this element is not a container!");
@@ -672,14 +746,17 @@ namespace web {
         }
 
         element_group operator+(element_group& _a, element& _b) {
-            _a.add(_a);
             _a.add(_b);
-            return _a;
+            return std::move(_a);
         }
 
         element_group operator+(element_group& _a, element_group& _b) {
-            _a.add(_b);
-            return _a;
+            // Move elements from _b into _a
+            for(auto& e : _b.m_elements) {
+                _a.m_elements.push_back(std::move(e));
+            }
+            _b.m_elements.clear();
+            return std::move(_a);
         }
 
         // C++20 rvalue overloads - implementations
@@ -697,24 +774,25 @@ namespace web {
 
         //////////////////////////////////////////////////////////
 
-        element_group::element_group(element_group& _g) {
-            element::m_type = element_group_t;
-            // we are not copying, but moving the elements
-            // since only this object will survive
-            for(size_t c = 0; c < _g.size(); c++) {
-                m_elements.push_back(std::move(_g.m_elements[c]));
-            }
-            _g.m_elements.clear();
-        }
         element_group::element_group() {
             element::m_type = element_group_t;
         }
 
-        element* element_group::make_copy()const {
-            //copy constructor 'grabs' content
-            element_group* pNonConstPtr = (element_group*)this;
-            //exceptionally we cast to non-const since for this class
-            element_group* ele_ptr = new element_group(*pNonConstPtr);
+        element_group::element_group(element_group&& _g) noexcept
+            : element(std::move(_g)) {
+            element::m_type = element_group_t;
+            // Elements already moved via base class move constructor
+        }
+
+        element_group::element_group(const element_group& _g)
+            : element(_g) {
+            element::m_type = element_group_t;
+            // Elements already copied via base class copy constructor
+        }
+
+        element* element_group::make_copy() const {
+            // Properly copy the element_group
+            element_group* ele_ptr = new element_group(*this);
             return ele_ptr;
         }
 

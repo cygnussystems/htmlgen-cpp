@@ -91,10 +91,12 @@ namespace web {
           public:
             std::vector<std::unique_ptr<element>> m_elements;
           private:
-            void operator=(element&) = delete;
+            element& operator=(const element&) = delete;
           public:
             element();
             element(const element&);
+            element(element&&) noexcept;
+            element& operator=(element&&) noexcept;
             virtual ~element();
 
             void copy(const element&);
@@ -178,7 +180,7 @@ namespace web {
             element& add(const html::attr&);
             virtual element& add(const std::string&);
             virtual element& add(const element&);
-            virtual element& add(element&& e) { return add(static_cast<const element&>(e)); }
+            virtual element& add(element&& e);
             element& add(element_group&);
             element& operator<<(const std::string&);
             element& operator<<(const element&);
@@ -334,8 +336,9 @@ namespace web {
 
         class element_group : public element {
           public:
-            element_group(element_group& _g);
             element_group();
+            element_group(element_group&& _g) noexcept;
+            element_group(const element_group& _g);
             virtual ~element_group() { ; }
             virtual element* make_copy() const override;
             virtual void write_html(std::ostream& _s) override {
