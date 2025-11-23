@@ -13,14 +13,25 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Source files
 set(SOURCES
-    source/html_tags.cpp
-    source/bootstrap.cpp
+    src/html_tags.cpp
+    src/bootstrap.cpp
+    src/html_resources.cpp
 )
 
 # Header files
 set(HEADERS
     include/html_tags.h
+    include/html_forward.h
+    include/html_core.h
+    include/html_basic.h
+    include/html_table.h
+    include/html_form.h
+    include/html_semantic.h
+    include/html_media.h
+    include/html_interactive.h
+    include/html_misc.h
     include/bootstrap.h
+    include/html_resources.h
 )
 
 # Create static library

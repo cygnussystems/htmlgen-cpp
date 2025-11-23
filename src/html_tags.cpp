@@ -92,6 +92,47 @@ namespace web {
             v[video_t] = "video";
             v[audio_t] = "audio";
             v[source_t] = "source";
+            // Table structure
+            v[colgroup_t] = "colgroup";
+            v[col_t] = "col";
+            // Interactive elements
+            v[details_t] = "details";
+            v[summary_t] = "summary";
+            v[dialog_t] = "dialog";
+            v[template_t] = "template";
+            // Semantic text elements
+            v[figure_t] = "figure";
+            v[figcaption_t] = "figcaption";
+            v[time_t] = "time";
+            v[mark_t] = "mark";
+            v[code_t] = "code";
+            v[pre_t] = "pre";
+            v[kbd_t] = "kbd";
+            v[samp_t] = "samp";
+            v[var_t] = "var";
+            v[blockquote_t] = "blockquote";
+            v[q_t] = "q";
+            v[abbr_t] = "abbr";
+            v[cite_t] = "cite";
+            v[dfn_t] = "dfn";
+            v[address_t] = "address";
+            v[sub_t] = "sub";
+            v[sup_t] = "sup";
+            v[ins_t] = "ins";
+            v[del_t] = "del";
+            v[s_t] = "s";
+            v[u_t] = "u";
+            // Form enhancements
+            v[datalist_t] = "datalist";
+            v[output_t] = "output";
+            v[optgroup_t] = "optgroup";
+            v[progress_t] = "progress";
+            v[meter_t] = "meter";
+            // Media & embedded
+            v[picture_t] = "picture";
+            v[track_t] = "track";
+            v[iframe_t] = "iframe";
+            v[canvas_t] = "canvas";
             return v;
         }
 
@@ -195,6 +236,32 @@ namespace web {
 
         element& element::href(const std::string& _a) { m_href_attr = _a; return *this; }
         const std::string& element::href()const { return m_href_attr; }
+
+        // Data attributes
+        element& element::data(const std::string& name, const std::string& value) {
+            add_attr("data-" + name, value);
+            return *this;
+        }
+
+        // ARIA accessibility attributes
+        element& element::aria_label(const std::string& s) { add_attr("aria-label", s); return *this; }
+        element& element::aria_labelledby(const std::string& s) { add_attr("aria-labelledby", s); return *this; }
+        element& element::aria_describedby(const std::string& s) { add_attr("aria-describedby", s); return *this; }
+        element& element::aria_hidden(bool b) { add_attr("aria-hidden", b ? "true" : "false"); return *this; }
+        element& element::aria_expanded(bool b) { add_attr("aria-expanded", b ? "true" : "false"); return *this; }
+        element& element::aria_controls(const std::string& s) { add_attr("aria-controls", s); return *this; }
+        element& element::aria_current(const std::string& s) { add_attr("aria-current", s); return *this; }
+        element& element::aria_live(const std::string& s) { add_attr("aria-live", s); return *this; }
+
+        // Global boolean attributes
+        element& element::hidden(bool b) { if (b) add_attr("hidden", "hidden"); return *this; }
+        element& element::contenteditable(bool b) { add_attr("contenteditable", b ? "true" : "false"); return *this; }
+        element& element::draggable(bool b) { add_attr("draggable", b ? "true" : "false"); return *this; }
+        element& element::spellcheck(bool b) { add_attr("spellcheck", b ? "true" : "false"); return *this; }
+        element& element::tabindex(int n) { add_attr("tabindex", std::to_string(n)); return *this; }
+        element& element::title(const std::string& s) { add_attr("title", s); return *this; }
+        element& element::lang(const std::string& s) { add_attr("lang", s); return *this; }
+        element& element::dir(const std::string& s) { add_attr("dir", s); return *this; }
 
         element& element::add_attr(const html::attr& _atr) {
             return add(_atr);
