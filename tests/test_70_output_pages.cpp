@@ -15,8 +15,8 @@
 #include "../include/bootstrap.h"
 #include "../include/html_resources.h"
 
-using namespace web::html;
-namespace bs = web::html::bootstrap;
+using namespace html;
+namespace bs = html::bootstrap;
 
 // Helper to get output directory path
 std::filesystem::path get_output_dir() {
@@ -40,10 +40,10 @@ void save_page(const std::string& filename, page& pg) {
 TEST_CASE("70000: All basic elements showcase", "[output][basic]") {
     page pg;
     pg.head << title("Basic HTML Elements Showcase");
-    pg.head << style(web::resources::bootstrap_css_string());
+    pg.head << style(resources::bootstrap_css_string());
 
     // Container
-    web::html::div container;
+    html::div container;
     container.cl("container");
 
     // Header
@@ -127,9 +127,9 @@ TEST_CASE("70000: All basic elements showcase", "[output][basic]") {
 TEST_CASE("70010: Table examples", "[output][tables]") {
     page pg;
     pg.head << title("Table Examples");
-    pg.head << style(web::resources::bootstrap_css_string());
+    pg.head << style(resources::bootstrap_css_string());
 
-    web::html::div container;
+    html::div container;
     container.cl("container");
 
     container << h1("Table Examples");
@@ -188,9 +188,9 @@ TEST_CASE("70010: Table examples", "[output][tables]") {
 TEST_CASE("70020: Form examples", "[output][forms]") {
     page pg;
     pg.head << title("Form Examples");
-    pg.head << style(web::resources::bootstrap_css_string());
+    pg.head << style(resources::bootstrap_css_string());
 
-    web::html::div container;
+    html::div container;
     container.cl("container");
 
     container << h1("Form Examples");
@@ -201,7 +201,7 @@ TEST_CASE("70020: Form examples", "[output][forms]") {
     login_form.cl("form-horizontal");
     login_form.action("/login").method("POST");
 
-    web::html::div fg1;
+    html::div fg1;
     fg1.cl("form-group");
     fg1 << label("Email:").for_id("email");
     input email_input;
@@ -210,7 +210,7 @@ TEST_CASE("70020: Form examples", "[output][forms]") {
     fg1 << email_input;
     login_form << fg1;
 
-    web::html::div fg2;
+    html::div fg2;
     fg2.cl("form-group");
     fg2 << label("Password:").for_id("password");
     input pwd_input;
@@ -219,7 +219,7 @@ TEST_CASE("70020: Form examples", "[output][forms]") {
     fg2 << pwd_input;
     login_form << fg2;
 
-    web::html::div fg3;
+    html::div fg3;
     fg3.cl("checkbox");
     label remember_label("Remember me");
     input remember_check;
@@ -240,7 +240,7 @@ TEST_CASE("70020: Form examples", "[output][forms]") {
     fieldset fs;
     fs << legend("Contact Information");
 
-    web::html::div row1;
+    html::div row1;
     row1.cl("form-group");
     row1 << label("Name:").for_id("name");
     input name_input;
@@ -249,7 +249,7 @@ TEST_CASE("70020: Form examples", "[output][forms]") {
     row1 << name_input;
     fs << row1;
 
-    web::html::div row2;
+    html::div row2;
     row2.cl("form-group");
     row2 << label("Email:").for_id("contact_email");
     input contact_email;
@@ -258,7 +258,7 @@ TEST_CASE("70020: Form examples", "[output][forms]") {
     row2 << contact_email;
     fs << row2;
 
-    web::html::div row3;
+    html::div row3;
     row3.cl("form-group");
     row3 << label("Subject:").for_id("subject");
     select subj;
@@ -268,7 +268,7 @@ TEST_CASE("70020: Form examples", "[output][forms]") {
     subj << option("sales", "Sales Question");
     fs << row3 << subj;
 
-    web::html::div row4;
+    html::div row4;
     row4.cl("form-group");
     row4 << label("Message:").for_id("message");
     textarea msg;
@@ -324,7 +324,7 @@ TEST_CASE("70020: Form examples", "[output][forms]") {
 TEST_CASE("70030: Semantic elements", "[output][semantic]") {
     page pg;
     pg.head << title("Semantic HTML5 Elements");
-    pg.head << style(web::resources::bootstrap_css_string());
+    pg.head << style(resources::bootstrap_css_string());
     pg.head << style(R"(
         header, footer, nav, main, article, section, aside {
             border: 1px solid #ddd;
@@ -354,7 +354,7 @@ TEST_CASE("70030: Semantic elements", "[output][semantic]") {
     pg << hdr;
 
     // Main content
-    web::html::main main_content;
+    html::main main_content;
 
     // Article
     article art;
@@ -407,9 +407,9 @@ TEST_CASE("70030: Semantic elements", "[output][semantic]") {
 TEST_CASE("70040: Interactive elements", "[output][interactive]") {
     page pg;
     pg.head << title("Interactive Elements");
-    pg.head << style(web::resources::bootstrap_css_string());
+    pg.head << style(resources::bootstrap_css_string());
 
-    web::html::div container;
+    html::div container;
     container.cl("container");
 
     container << h1("Interactive Elements");
@@ -450,7 +450,7 @@ TEST_CASE("70040: Interactive elements", "[output][interactive]") {
     container << p("Template elements contain content that is not rendered but can be used by JavaScript:");
     template_ tmpl;
     tmpl.id("card-template");
-    web::html::div card;
+    html::div card;
     card.cl("card");
     card << h3("Card Title");
     card << p("Card content goes here.");
@@ -466,17 +466,17 @@ TEST_CASE("70040: Interactive elements", "[output][interactive]") {
 TEST_CASE("70050: Bootstrap styled page", "[output][bootstrap]") {
     page pg;
     pg.head << title("Bootstrap Styled Page");
-    pg.head << style(web::resources::bootstrap_css_string());
-    pg.head << script(web::resources::jquery_js_string());
-    pg.head << script(web::resources::bootstrap_js_string());
+    pg.head << style(resources::bootstrap_css_string());
+    pg.head << script(resources::jquery_js_string());
+    pg.head << script(resources::bootstrap_js_string());
 
     // Navigation bar
     nav navbar;
     navbar.cl("navbar navbar-default");
-    web::html::div nav_container;
+    html::div nav_container;
     nav_container.cl("container-fluid");
 
-    web::html::div nav_header;
+    html::div nav_header;
     nav_header.cl("navbar-header");
     anchor brand("Brand");
     brand.cl("navbar-brand").href("#");
@@ -499,7 +499,7 @@ TEST_CASE("70050: Bootstrap styled page", "[output][bootstrap]") {
     bs::container cont;
 
     // Page header
-    web::html::div page_header;
+    html::div page_header;
     page_header.cl("page-header");
     page_header << h1("Dashboard") << small_(" Overview");
     cont << page_header;
@@ -509,13 +509,13 @@ TEST_CASE("70050: Bootstrap styled page", "[output][bootstrap]") {
 
     // Panel 1
     bs::column col1(4);
-    web::html::div panel1;
+    html::div panel1;
     panel1.cl("panel panel-primary");
-    web::html::div panel1_head;
+    html::div panel1_head;
     panel1_head.cl("panel-heading");
     panel1_head << h3("Statistics").cl("panel-title");
     panel1 << panel1_head;
-    web::html::div panel1_body;
+    html::div panel1_body;
     panel1_body.cl("panel-body");
     panel1_body << p("Total Users: ") << strong("1,234");
     panel1_body << p("Active Today: ") << strong("567");
@@ -525,13 +525,13 @@ TEST_CASE("70050: Bootstrap styled page", "[output][bootstrap]") {
 
     // Panel 2
     bs::column col2(4);
-    web::html::div panel2;
+    html::div panel2;
     panel2.cl("panel panel-success");
-    web::html::div panel2_head;
+    html::div panel2_head;
     panel2_head.cl("panel-heading");
     panel2_head << h3("Revenue").cl("panel-title");
     panel2 << panel2_head;
-    web::html::div panel2_body;
+    html::div panel2_body;
     panel2_body.cl("panel-body");
     panel2_body << p("This Month: ") << strong("$45,678");
     panel2_body << p("Last Month: ") << strong("$42,123");
@@ -541,13 +541,13 @@ TEST_CASE("70050: Bootstrap styled page", "[output][bootstrap]") {
 
     // Panel 3
     bs::column col3(4);
-    web::html::div panel3;
+    html::div panel3;
     panel3.cl("panel panel-info");
-    web::html::div panel3_head;
+    html::div panel3_head;
     panel3_head.cl("panel-heading");
     panel3_head << h3("Tasks").cl("panel-title");
     panel3 << panel3_head;
-    web::html::div panel3_body;
+    html::div panel3_body;
     panel3_body.cl("panel-body");
     panel3_body << p("Completed: ") << strong("89%");
     progress task_prog;
@@ -560,9 +560,9 @@ TEST_CASE("70050: Bootstrap styled page", "[output][bootstrap]") {
     cont << row1;
 
     // Table in a panel
-    web::html::div table_panel;
+    html::div table_panel;
     table_panel.cl("panel panel-default");
-    web::html::div table_panel_head;
+    html::div table_panel_head;
     table_panel_head.cl("panel-heading");
     table_panel_head << h3("Recent Orders").cl("panel-title");
     table_panel << table_panel_head;
@@ -579,17 +579,17 @@ TEST_CASE("70050: Bootstrap styled page", "[output][bootstrap]") {
 
     // Alerts
     cont << h2("Alerts");
-    web::html::div alert1;
+    html::div alert1;
     alert1.cl("alert alert-success");
     alert1 << strong("Success!") << text(" Operation completed successfully.");
     cont << alert1;
 
-    web::html::div alert2;
+    html::div alert2;
     alert2.cl("alert alert-warning");
     alert2 << strong("Warning!") << text(" Please review your settings.");
     cont << alert2;
 
-    web::html::div alert3;
+    html::div alert3;
     alert3.cl("alert alert-danger");
     alert3 << strong("Error!") << text(" Something went wrong.");
     cont << alert3;
@@ -611,9 +611,9 @@ TEST_CASE("70050: Bootstrap styled page", "[output][bootstrap]") {
 TEST_CASE("70060: Media elements", "[output][media]") {
     page pg;
     pg.head << title("Media Elements");
-    pg.head << style(web::resources::bootstrap_css_string());
+    pg.head << style(resources::bootstrap_css_string());
 
-    web::html::div container;
+    html::div container;
     container.cl("container");
 
     container << h1("Media Elements");
@@ -681,9 +681,9 @@ TEST_CASE("70060: Media elements", "[output][media]") {
 TEST_CASE("70070: Accessibility features", "[output][a11y]") {
     page pg;
     pg.head << title("Accessibility Features");
-    pg.head << style(web::resources::bootstrap_css_string());
+    pg.head << style(resources::bootstrap_css_string());
 
-    web::html::div container;
+    html::div container;
     container.cl("container");
 
     container << h1("Accessibility Features");
@@ -707,7 +707,7 @@ TEST_CASE("70070: Accessibility features", "[output][a11y]") {
     acc_form.role("form").aria_labelledby("form-title");
     acc_form << h3("User Registration").id("form-title");
 
-    web::html::div fg;
+    html::div fg;
     fg.cl("form-group");
     label name_label("Full Name");
     name_label.for_id("fullname");
@@ -735,12 +735,12 @@ TEST_CASE("70070: Accessibility features", "[output][a11y]") {
 
     // Live regions
     container << h2("Live Regions");
-    web::html::div status;
+    html::div status;
     status.role("status").aria_live("polite");
     status << p("Status messages will appear here.");
     container << status;
 
-    web::html::div alert;
+    html::div alert;
     alert.role("alert").aria_live("assertive");
     alert.cl("alert alert-danger");
     alert << p("Important alert message!");
@@ -748,7 +748,7 @@ TEST_CASE("70070: Accessibility features", "[output][a11y]") {
 
     // Data attributes
     container << h2("Data Attributes");
-    web::html::div data_div;
+    html::div data_div;
     data_div.data("user-id", "123")
             .data("role", "admin")
             .data("created", "2024-01-15");
@@ -757,7 +757,7 @@ TEST_CASE("70070: Accessibility features", "[output][a11y]") {
 
     // Global attributes
     container << h2("Global Attributes");
-    web::html::div global_div;
+    html::div global_div;
     global_div.id("special-div")
               .cl("highlighted")
               .title("Tooltip text")
@@ -777,12 +777,12 @@ TEST_CASE("70070: Accessibility features", "[output][a11y]") {
 TEST_CASE("70080: Charts with C3.js", "[output][charts]") {
     page pg;
     pg.head << title("Charts with C3.js");
-    pg.head << style(web::resources::bootstrap_css_string());
-    pg.head << style(web::resources::c3_css_string());
-    pg.head << script(web::resources::d3_js_string());
-    pg.head << script(web::resources::c3_js_string());
+    pg.head << style(resources::bootstrap_css_string());
+    pg.head << style(resources::c3_css_string());
+    pg.head << script(resources::d3_js_string());
+    pg.head << script(resources::c3_js_string());
 
-    web::html::div container;
+    html::div container;
     container.cl("container");
 
     container << h1("Charts with C3.js");
@@ -790,7 +790,7 @@ TEST_CASE("70080: Charts with C3.js", "[output][charts]") {
 
     // Line chart
     container << h2("Line Chart");
-    web::chart::line_chart line;
+    chart::line_chart line;
     line.m_sID = "line_chart";
     line.m_sDataName = "Sales";
     line.m_sColor = "#3498db";
@@ -801,7 +801,7 @@ TEST_CASE("70080: Charts with C3.js", "[output][charts]") {
 
     // Bar chart
     container << h2("Bar Chart");
-    web::chart::bar_chart bar;
+    chart::bar_chart bar;
     bar.m_sID = "bar_chart";
     bar.m_sDataName = "Revenue";
     bar.add("Jan", 120.0);
@@ -813,7 +813,7 @@ TEST_CASE("70080: Charts with C3.js", "[output][charts]") {
 
     // Timeseries chart
     container << h2("Timeseries Chart");
-    web::chart::timeseries_line_chart ts;
+    chart::timeseries_line_chart ts;
     ts.m_sID = "ts_chart";
     ts.m_sDataName = "Temperature";
     ts.m_sColor = "#e74c3c";
@@ -835,10 +835,10 @@ TEST_CASE("70080: Charts with C3.js", "[output][charts]") {
 TEST_CASE("70090: Complete report example", "[output][report]") {
     page pg;
     pg.head << title("Monthly Sales Report - Q4 2024");
-    pg.head << style(web::resources::bootstrap_css_string());
-    pg.head << style(web::resources::c3_css_string());
-    pg.head << script(web::resources::d3_js_string());
-    pg.head << script(web::resources::c3_js_string());
+    pg.head << style(resources::bootstrap_css_string());
+    pg.head << style(resources::c3_css_string());
+    pg.head << script(resources::d3_js_string());
+    pg.head << script(resources::c3_js_string());
 
     // Custom styles
     pg.head << style(R"(
@@ -861,34 +861,34 @@ TEST_CASE("70090: Complete report example", "[output][report]") {
     bs::row metrics_row;
 
     bs::column m1(3);
-    web::html::div metric1;
+    html::div metric1;
     metric1.cl("metric-card");
-    metric1 << web::html::div().cl("metric-value") << text("$127,450");
-    metric1 << web::html::div().cl("metric-label") << text("Total Revenue");
+    metric1 << html::div().cl("metric-value") << text("$127,450");
+    metric1 << html::div().cl("metric-label") << text("Total Revenue");
     m1 << metric1;
     metrics_row << m1;
 
     bs::column m2(3);
-    web::html::div metric2;
+    html::div metric2;
     metric2.cl("metric-card");
-    metric2 << web::html::div().cl("metric-value") << text("1,847");
-    metric2 << web::html::div().cl("metric-label") << text("Total Orders");
+    metric2 << html::div().cl("metric-value") << text("1,847");
+    metric2 << html::div().cl("metric-label") << text("Total Orders");
     m2 << metric2;
     metrics_row << m2;
 
     bs::column m3(3);
-    web::html::div metric3;
+    html::div metric3;
     metric3.cl("metric-card");
-    metric3 << web::html::div().cl("metric-value") << text("$69.00");
-    metric3 << web::html::div().cl("metric-label") << text("Avg Order Value");
+    metric3 << html::div().cl("metric-value") << text("$69.00");
+    metric3 << html::div().cl("metric-label") << text("Avg Order Value");
     m3 << metric3;
     metrics_row << m3;
 
     bs::column m4(3);
-    web::html::div metric4;
+    html::div metric4;
     metric4.cl("metric-card");
-    metric4 << web::html::div().cl("metric-value") << text("+15%");
-    metric4 << web::html::div().cl("metric-label") << text("Growth Rate");
+    metric4 << html::div().cl("metric-value") << text("+15%");
+    metric4 << html::div().cl("metric-label") << text("Growth Rate");
     m4 << metric4;
     metrics_row << m4;
 
@@ -897,7 +897,7 @@ TEST_CASE("70090: Complete report example", "[output][report]") {
 
     // Sales chart
     cont << h2("Sales Trend");
-    web::chart::line_chart sales_chart;
+    chart::line_chart sales_chart;
     sales_chart.m_sID = "sales_trend";
     sales_chart.m_sDataName = "Revenue ($)";
     sales_chart.m_sColor = "#3498db";
@@ -920,7 +920,7 @@ TEST_CASE("70090: Complete report example", "[output][report]") {
 
     // Regional breakdown
     cont << h2("Regional Performance");
-    web::chart::bar_chart region_chart;
+    chart::bar_chart region_chart;
     region_chart.m_sID = "region_perf";
     region_chart.m_sDataName = "Revenue ($K)";
     region_chart.add("North", 45.2);

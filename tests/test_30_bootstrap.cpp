@@ -9,7 +9,7 @@
 #include "../include/html_tags.h"
 #include "../include/bootstrap.h"
 
-namespace bs = web::html::bootstrap;
+namespace bs = html::bootstrap;
 
 TEST_CASE("30000: Bootstrap container", "[bootstrap][container]") {
     bs::container c;

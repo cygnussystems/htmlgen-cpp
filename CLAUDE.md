@@ -95,7 +95,7 @@ ctest --output-on-failure
 
 ```cpp
 #include "html_tags.h"
-using namespace web::html;
+using namespace html;
 
 page pg;
 pg.head.add(title("My Page"));
@@ -161,7 +161,7 @@ pg << raw_html("<div class='trusted'>Trusted HTML</div>");
 ```cpp
 #include "bootstrap.h"
 
-web::chart::line_chart chart;
+chart::line_chart chart;
 chart.m_sID = "my_chart";
 chart.m_sDataName = "Sales";
 chart.m_sColor = "#3498db";
@@ -260,7 +260,7 @@ All elements support these chainable methods:
 
 ## Notes
 
-- The library uses `web::html` namespace
+- The library uses `html` namespace
 - Elements support chaining via `<<` operator
 - Use `.id()`, `.cl()`, `.style()` etc. for attributes
 - `element_group` allows combining multiple elements with `+` operator

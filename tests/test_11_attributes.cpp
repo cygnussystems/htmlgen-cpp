@@ -8,7 +8,7 @@
 #include <catch2/catch_all.hpp>
 #include "../include/html_tags.h"
 
-using namespace web::html;
+using namespace html;
 
 TEST_CASE("11050: HTML escape utility", "[utility][escape]") {
     SECTION("no escaping needed") {
@@ -36,7 +36,7 @@ TEST_CASE("11050: HTML escape utility", "[utility][escape]") {
 }
 
 TEST_CASE("11060: Data attributes", "[attributes][data]") {
-    web::html::div d;
+    html::div d;
     d.data("id", "123").data("name", "test");
     std::string result = d.html_string();
     CHECK(result.find("data-id=\"123\"") != std::string::npos);
@@ -51,7 +51,7 @@ TEST_CASE("11070: ARIA attributes", "[attributes][aria]") {
         CHECK(html.find("aria-label=\"Close dialog\"") != std::string::npos);
     }
     SECTION("aria-hidden") {
-        web::html::div d;
+        html::div d;
         d.aria_hidden(true);
         std::string result = d.html_string();
         CHECK(result.find("aria-hidden=\"true\"") != std::string::npos);
@@ -69,13 +69,13 @@ TEST_CASE("11070: ARIA attributes", "[attributes][aria]") {
         CHECK(html.find("aria-controls=\"menu1\"") != std::string::npos);
     }
     SECTION("aria-labelledby") {
-        web::html::div d;
+        html::div d;
         d.aria_labelledby("title1");
         std::string html = d.html_string();
         CHECK(html.find("aria-labelledby=\"title1\"") != std::string::npos);
     }
     SECTION("aria-describedby") {
-        web::html::div d;
+        html::div d;
         d.aria_describedby("desc1");
         std::string html = d.html_string();
         CHECK(html.find("aria-describedby=\"desc1\"") != std::string::npos);
@@ -84,49 +84,49 @@ TEST_CASE("11070: ARIA attributes", "[attributes][aria]") {
 
 TEST_CASE("11080: Global attributes", "[attributes][global]") {
     SECTION("hidden") {
-        web::html::div d;
+        html::div d;
         d.hidden();
         std::string result = d.html_string();
         CHECK(result.find("hidden=\"hidden\"") != std::string::npos);
     }
     SECTION("contenteditable") {
-        web::html::div d;
+        html::div d;
         d.contenteditable(true);
         std::string result = d.html_string();
         CHECK(result.find("contenteditable=\"true\"") != std::string::npos);
     }
     SECTION("tabindex") {
-        web::html::div d;
+        html::div d;
         d.tabindex(0);
         std::string result = d.html_string();
         CHECK(result.find("tabindex=\"0\"") != std::string::npos);
     }
     SECTION("title") {
-        web::html::div d;
+        html::div d;
         d.title("Tooltip text");
         std::string result = d.html_string();
         CHECK(result.find("title=\"Tooltip text\"") != std::string::npos);
     }
     SECTION("lang") {
-        web::html::div d;
+        html::div d;
         d.lang("en-US");
         std::string result = d.html_string();
         CHECK(result.find("lang=\"en-US\"") != std::string::npos);
     }
     SECTION("dir") {
-        web::html::div d;
+        html::div d;
         d.dir("rtl");
         std::string result = d.html_string();
         CHECK(result.find("dir=\"rtl\"") != std::string::npos);
     }
     SECTION("draggable") {
-        web::html::div d;
+        html::div d;
         d.draggable(true);
         std::string result = d.html_string();
         CHECK(result.find("draggable=\"true\"") != std::string::npos);
     }
     SECTION("spellcheck") {
-        web::html::div d;
+        html::div d;
         d.spellcheck(false);
         std::string result = d.html_string();
         CHECK(result.find("spellcheck=\"false\"") != std::string::npos);

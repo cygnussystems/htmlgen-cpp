@@ -10,9 +10,7 @@
 
 #include "html_core.h"
 
-namespace web {
-
-    namespace html {
+namespace html {
 
         ////////////////////////////////////////////////////////////////////////////////////
 
@@ -23,14 +21,14 @@ namespace web {
                 m_newline_after_tag = true;
                 m_newline_after_element = true;
             }
-            script(const web::html::attr& _a) {
+            script(const html::attr& _a) {
                 element::m_type = script_t;
                 m_newline_after_tag = true;
                 m_newline_after_element = true;
                 add(_a);
             }
 
-            script(const web::html::attr& _a, const web::html::attr& _b) {
+            script(const html::attr& _a, const html::attr& _b) {
                 element::m_type = script_t;
                 m_newline_after_tag = true;
                 m_newline_after_element = true;
@@ -224,8 +222,6 @@ namespace web {
             }
         };
 
-    }//html
-
-}//web
+}//html
 
 #endif

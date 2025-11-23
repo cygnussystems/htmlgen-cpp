@@ -8,7 +8,7 @@
 #include <catch2/catch_all.hpp>
 #include "../include/html_tags.h"
 
-using namespace web::html;
+using namespace html;
 
 TEST_CASE("10000: Element basics", "[elements][basic]") {
     SECTION("default element is a container") {
@@ -23,13 +23,13 @@ TEST_CASE("10000: Element basics", "[elements][basic]") {
 
 TEST_CASE("10010: Div element", "[elements][basic][div]") {
     SECTION("empty div") {
-        web::html::div d;
+        html::div d;
         std::string html = d.html_string();
         CHECK(html.find("<div>") != std::string::npos);
         CHECK(html.find("</div>") != std::string::npos);
     }
     SECTION("div with content") {
-        web::html::div d;
+        html::div d;
         d << text("Hello");
         std::string html = d.html_string();
         CHECK(html.find("Hello") != std::string::npos);
@@ -137,26 +137,26 @@ TEST_CASE("10080: Element groups", "[elements][basic][groups]") {
 
 TEST_CASE("10090: Element attributes", "[elements][basic][attributes]") {
     SECTION("id attribute") {
-        web::html::div d;
+        html::div d;
         d.id("myDiv");
         CHECK(d.html_string().find("id=\"myDiv\"") != std::string::npos);
     }
     SECTION("class attribute") {
-        web::html::div d;
+        html::div d;
         d.cl("container");
         CHECK(d.html_string().find("class=\"container\"") != std::string::npos);
     }
     SECTION("style attribute") {
-        web::html::div d;
+        html::div d;
         d.style("color: red");
         CHECK(d.html_string().find("style=\"color: red\"") != std::string::npos);
     }
 }
 
 TEST_CASE("10100: Find elements by ID", "[elements][basic][find]") {
-    web::html::div container;
+    html::div container;
     container.id("container");
-    web::html::div child;
+    html::div child;
     child.id("child");
     container << child;
 

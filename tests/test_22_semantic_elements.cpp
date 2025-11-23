@@ -8,7 +8,7 @@
 #include <catch2/catch_all.hpp>
 #include "../include/html_tags.h"
 
-using namespace web::html;
+using namespace html;
 
 TEST_CASE("22000: Header element", "[elements][semantic]") {
     header h;
@@ -89,7 +89,7 @@ TEST_CASE("22070: Dialog element", "[elements][semantic][interactive]") {
 
 TEST_CASE("22080: Template element", "[elements][semantic][interactive]") {
     template_ t;
-    t << web::html::div().cl("template-content");
+    t << html::div().cl("template-content");
     std::string result = t.html_string();
     CHECK(result.find("<template>") != std::string::npos);
     CHECK(result.find("</template>") != std::string::npos);

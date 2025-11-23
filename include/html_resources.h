@@ -11,9 +11,7 @@
 #include <string>
 #include <cstddef>
 
-namespace web {
-
-    namespace resources {
+namespace resources {
 
         //---------------------------------------------------------------------------------
         // Bootstrap CSS (minified)
@@ -75,8 +73,6 @@ namespace web {
             return std::string(c3_css, c3_css_size);
         }
 
-    } // namespace resources
-
-} // namespace web
+} // namespace resources
 
 #endif

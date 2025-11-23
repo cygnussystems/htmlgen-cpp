@@ -10,9 +10,7 @@
 
 #include "html_core.h"
 
-namespace web {
-
-    namespace html {
+namespace html {
 
         ////////////////////////////////////////////////////////////////////////////////////
         // Media Elements
@@ -150,8 +148,6 @@ namespace web {
             }
         };
 
-    }//html
-
-}//web
+}//html
 
 #endif

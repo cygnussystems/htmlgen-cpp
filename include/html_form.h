@@ -10,9 +10,7 @@
 
 #include "html_core.h"
 
-namespace web {
-
-    namespace html {
+namespace html {
 
         ////////////////////////////////////////////////////////////////////////////////////
         // Form Elements
@@ -240,8 +238,6 @@ namespace web {
             }
         };
 
-    }//html
-
-}//web
+}//html
 
 #endif

@@ -8,7 +8,7 @@
 #include <catch2/catch_all.hpp>
 #include "../include/html_tags.h"
 
-using namespace web::html;
+using namespace html;
 
 TEST_CASE("20000: Table elements", "[elements][table]") {
     SECTION("basic table") {

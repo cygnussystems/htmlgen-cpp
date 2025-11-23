@@ -7,9 +7,7 @@
 
 #include "../include/html_tags.h"
 
-namespace web {
-
-    namespace html {
+namespace html {
 
         /////////////////////////////////////////////////////////////
         // HTML escape utility implementation
@@ -695,7 +693,7 @@ namespace web {
 
         ///////////////////////////////////////////////////////////////////////
 
-        std::ostream& operator<<(std::ostream& _s, web::html::element& _e) {
+        std::ostream& operator<<(std::ostream& _s, html::element& _e) {
             _e.write_html(_s);
             return _s;
         }
@@ -796,5 +794,4 @@ namespace web {
             return ele_ptr;
         }
 
-    }
 }

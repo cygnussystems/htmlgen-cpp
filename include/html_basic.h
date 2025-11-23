@@ -10,9 +10,7 @@
 
 #include "html_core.h"
 
-namespace web {
-
-    namespace html {
+namespace html {
 
         /////////////////////////////////////////////////////////////////////////////////////
 
@@ -439,8 +437,6 @@ namespace web {
             }
         };
 
-    }//html
-
-}//web
+}//html
 
 #endif

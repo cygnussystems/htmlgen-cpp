@@ -8,7 +8,7 @@
 #include <catch2/catch_all.hpp>
 #include "../include/html_tags.h"
 
-using namespace web::html;
+using namespace html;
 
 TEST_CASE("25000: Video element", "[elements][media]") {
     video v;

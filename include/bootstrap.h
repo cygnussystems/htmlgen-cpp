@@ -13,9 +13,7 @@
 #include <chrono>
 #include <format>
 
-namespace web {
-
-    namespace image {
+namespace image {
         class rotator {
           public:
             std::vector<std::string> m_images;
@@ -25,9 +23,9 @@ namespace web {
             void add_image(const std::string& file);
             [[nodiscard]] std::string html();
         };
-    }
+}
 
-    namespace chart {
+namespace chart {
         class line_chart {
             std::string m_Script;
           public:
@@ -83,14 +81,14 @@ namespace web {
           public:
             [[nodiscard]] std::string html();
         };
-    }
+}
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    namespace html {
-        namespace bootstrap {
+namespace html {
+    namespace bootstrap {
 
-            class container : public web::html::div {
+            class container : public html::div {
               public:
                 container() { cl("container"); }
                 container(element& _e) {
@@ -99,7 +97,7 @@ namespace web {
                 }
             };
 
-            class row : public web::html::div {
+            class row : public html::div {
               public:
                 row() { cl("row clearfix"); }
                 row(element& _e) {
@@ -108,7 +106,7 @@ namespace web {
                 }
             };
 
-            class column : public web::html::div {
+            class column : public html::div {
               public:
                 column(int _grid_width) {
                     cl(std::string("column col-md-") + std::to_string(_grid_width));
@@ -117,22 +115,22 @@ namespace web {
 
             ////////////////////////////////////////////////////////////////////////////////////////////////
 
-            class navbar_dropdown : public web::html::li {
+            class navbar_dropdown : public html::li {
               public:
                 navbar_dropdown(const std::string& _name) {
                     cl("dropdown");
                     anchor a;
                     a.href("#").cl("dropdown-toggle").add_attr("data-toggle", "dropdown");
-                    a << span(_name).add_cl("label").add_cl("label-info") << web::html::b().cl("caret");
-                    (*this) << a << web::html::ul().cl("dropdown-menu").id("listing");
+                    a << span(_name).add_cl("label").add_cl("label-info") << html::b().cl("caret");
+                    (*this) << a << html::ul().cl("dropdown-menu").id("listing");
                 }
 
                 void add_menu_item(const std::string& _name, const std::string& _target) {
-                    get("listing") << (web::html::li() << (anchor().href(_target) << _name));
+                    get("listing") << (html::li() << (anchor().href(_target) << _name));
                 }
             };
 
-            class navbar : public web::html::nav {
+            class navbar : public html::nav {
               public:
                 navbar() {
                     cl("navbar navbar-default");
@@ -147,40 +145,39 @@ namespace web {
 
                     get("menu_parent") << ul().cl("nav navbar-nav navbar-right").id("menu_list_right");
                 }
-                element& add_entry(web::html::element& _e, const std::string& _id) {
-                    get("menu_list") << web::html::li(_e).id(_id);
+                element& add_entry(html::element& _e, const std::string& _id) {
+                    get("menu_list") << html::li(_e).id(_id);
                     return *this;
                 }
-                element& add_entry(web::html::element&& e, const std::string& id) {
-                    get("menu_list") << web::html::li(std::move(e)).id(id);
+                element& add_entry(html::element&& e, const std::string& id) {
+                    get("menu_list") << html::li(std::move(e)).id(id);
                     return *this;
                 }
-                element& add_entry_right(web::html::element& _e, const std::string& _id) {
-                    get("menu_list_right") << web::html::li(_e).id(_id);
+                element& add_entry_right(html::element& _e, const std::string& _id) {
+                    get("menu_list_right") << html::li(_e).id(_id);
                     return *this;
                 }
-                element& add_entry_right(web::html::element&& _e, const std::string& _id) {
-                    get("menu_list_right") << web::html::li(std::move(_e)).id(_id);
+                element& add_entry_right(html::element&& _e, const std::string& _id) {
+                    get("menu_list_right") << html::li(std::move(_e)).id(_id);
                     return *this;
                 }
-                element& add_dropdown(web::html::element& _e, const std::string& _id) {
+                element& add_dropdown(html::element& _e, const std::string& _id) {
                     get("menu_list") << _e.id(_id);
                     return *this;
                 }
 
-                element& add_active_entry(web::html::element& _e, const std::string& _id) {
-                    get("menu_list") << web::html::li(_e).cl("active").id(_id);
+                element& add_active_entry(html::element& _e, const std::string& _id) {
+                    get("menu_list") << html::li(_e).cl("active").id(_id);
                     return *this;
                 }
 
-                element& add_brand(web::html::element& _e) {
+                element& add_brand(html::element& _e) {
                     get("nav_header") << _e.cl("navbar-brand");
                     return *this;
                 }
             };
 
-        }
-    }
-}
+    }//bootstrap
+}//html
 
 #endif

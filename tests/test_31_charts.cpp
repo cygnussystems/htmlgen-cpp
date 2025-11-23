@@ -10,7 +10,7 @@
 #include "../include/bootstrap.h"
 
 TEST_CASE("31000: Line chart", "[chart][line]") {
-    web::chart::line_chart chart;
+    chart::line_chart chart;
     chart.m_sID = "test_chart";
     chart.m_sColor = "#ff0000";
     chart.add(10.0);
@@ -24,7 +24,7 @@ TEST_CASE("31000: Line chart", "[chart][line]") {
 }
 
 TEST_CASE("31010: Bar chart", "[chart][bar]") {
-    web::chart::bar_chart chart;
+    chart::bar_chart chart;
     chart.m_sID = "bar_chart";
     chart.add("Jan", 100.0);
     chart.add("Feb", 150.0);
@@ -39,7 +39,7 @@ TEST_CASE("31010: Bar chart", "[chart][bar]") {
 }
 
 TEST_CASE("31020: Timeseries line chart", "[chart][timeseries]") {
-    web::chart::timeseries_line_chart chart;
+    chart::timeseries_line_chart chart;
     chart.m_sID = "ts_chart";
     chart.m_sColor = "#0000ff";
 

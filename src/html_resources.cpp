@@ -7,7 +7,7 @@
 
 #include "../include/html_resources.h"
 
-namespace web {
+
     namespace resources {
 
         //---------------------------------------------------------------------------------
@@ -71,4 +71,3 @@ namespace web {
 
     } // namespace resources
 
-} // namespace web

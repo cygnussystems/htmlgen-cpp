@@ -16,9 +16,7 @@
 #include <stdexcept>
 #include <cassert>
 
-namespace web {
-
-    namespace html {
+namespace html {
 
         enum element_t {
             undefined_t = 0,
@@ -144,8 +142,6 @@ namespace web {
         class element_group;
         class element;
 
-    }//html
-
-}//web
+}//html
 
 #endif

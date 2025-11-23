@@ -10,9 +10,7 @@
 
 #include "html_forward.h"
 
-namespace web {
-
-    namespace html {
+namespace html {
 
         // HTML escape utility - escapes <, >, &, ", '
         [[nodiscard]] std::string html_escape(std::string_view input);
@@ -223,7 +221,7 @@ namespace web {
             virtual element* make_copy()const;
         };
 
-        std::ostream& operator<<(std::ostream&, web::html::element&);
+        std::ostream& operator<<(std::ostream&, html::element&);
 
         /////////////////////////////////////////////////////////////////////////////////////
         // Page head
@@ -357,8 +355,6 @@ namespace web {
         element_group operator+(element&, element&&);
         element_group operator+(element&&, element&);
 
-    }//html
-
-}//web
+}//html
 
 #endif

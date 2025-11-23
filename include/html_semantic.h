@@ -10,9 +10,7 @@
 
 #include "html_core.h"
 
-namespace web {
-
-    namespace html {
+namespace html {
 
         ////////////////////////////////////////////////////////////////////////////////////
         // Semantic HTML5 Elements
@@ -444,8 +442,6 @@ namespace web {
             }
         };
 
-    }//html
-
-}//web
+}//html
 
 #endif

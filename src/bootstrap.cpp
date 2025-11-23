@@ -11,9 +11,7 @@
 #include <format>
 #include <regex>
 
-namespace web {
-
-    namespace {
+namespace {
         // Local string replace utility
         void find_replace_all(std::string& str, const std::string& from, const std::string& to) {
             if (from.empty()) return;
@@ -86,9 +84,9 @@ namespace web {
         void rotator::add_image(const std::string& _file) {
             m_images.push_back(_file);
         }
-    }
+    }//image
 
-    namespace chart {
+namespace chart {
 
         line_chart::line_chart() {
             m_sDataName = "data";
@@ -123,9 +121,9 @@ namespace web {
                 }
             }
             find_replace_all(m_Script, "CSV_NUMBERS_Y", s_numbers);
-            web::html::element_group group;
-            group << web::html::div().id(m_sID).style("height:" + m_sHeight);
-            group << web::html::script(m_Script);
+            html::element_group group;
+            group << html::div().id(m_sID).style("height:" + m_sHeight);
+            group << html::script(m_Script);
             return group.html();
         }
 
@@ -203,9 +201,9 @@ namespace web {
             find_replace_all(m_Script, "CSV_NUMBERS_Y", s_numbers);
             find_replace_all(m_Script, "CSV_TIMESTAMPS_X", s_timestamps);
             find_replace_all(m_Script, "Y_MINIMUM", std::to_string(m_dMin));
-            web::html::element_group group;
-            group << web::html::div().id(m_sID).style("height:" + m_sHeight);
-            group << web::html::script(m_Script);
+            html::element_group group;
+            group << html::div().id(m_sID).style("height:" + m_sHeight);
+            group << html::script(m_Script);
             return group.html();
         }
 
@@ -252,16 +250,15 @@ namespace web {
             }
             find_replace_all(m_Script, "CSV_NUMBERS_Y", s_numbers);
             find_replace_all(m_Script, "CSV_NAMES_X", s_xnames);
-            web::html::element_group group;
-            group << web::html::div().id(m_sID).style("height:" + m_sHeight);
-            group << web::html::script(m_Script);
+            html::element_group group;
+            group << html::div().id(m_sID).style("height:" + m_sHeight);
+            group << html::script(m_Script);
             return group.html();
         }
-    }
+}
 
-    namespace html {
-        namespace bootstrap {
-            // All bootstrap classes are header-only
-        }
+namespace html {
+    namespace bootstrap {
+        // All bootstrap classes are header-only
     }
 }
