@@ -1,0 +1,29 @@
+# Build directories
+build/
+cmake-build-*/
+out/
+
+# IDE
+.idea/
+.vscode/
+*.user
+*.suo
+
+# Compiled files
+*.obj
+*.o
+*.lib
+*.a
+*.exe
+*.dll
+*.so
+*.dylib
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Testing
+Testing/
