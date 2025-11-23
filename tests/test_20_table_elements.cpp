@@ -13,9 +13,7 @@ using namespace html;
 TEST_CASE("20000: Table elements", "[elements][table]") {
     SECTION("basic table") {
         table t;
-        tr row;
-        row << td("Cell 1") << td("Cell 2");
-        t << row;
+        t << tr(td("Cell 1"), td("Cell 2"));
         std::string html = t.html_string();
         CHECK(html.find("<table>") != std::string::npos);
         CHECK(html.find("<tr>") != std::string::npos);
@@ -93,28 +91,19 @@ TEST_CASE("20030: Colgroup and col", "[elements][table][colgroup]") {
 
 TEST_CASE("20040: Table sections", "[elements][table][sections]") {
     SECTION("thead") {
-        thead th;
-        tr row;
-        row << td("Header");
-        th << row;
+        thead th(tr(td("Header")));
         std::string html = th.html_string();
         CHECK(html.find("<thead>") != std::string::npos);
         CHECK(html.find("</thead>") != std::string::npos);
     }
     SECTION("tbody") {
-        tbody tb;
-        tr row;
-        row << td("Data");
-        tb << row;
+        tbody tb(tr(td("Data")));
         std::string html = tb.html_string();
         CHECK(html.find("<tbody>") != std::string::npos);
         CHECK(html.find("</tbody>") != std::string::npos);
     }
     SECTION("tfoot") {
-        tfoot tf;
-        tr row;
-        row << td("Footer");
-        tf << row;
+        tfoot tf(tr(td("Footer")));
         std::string html = tf.html_string();
         CHECK(html.find("<tfoot>") != std::string::npos);
         CHECK(html.find("</tfoot>") != std::string::npos);

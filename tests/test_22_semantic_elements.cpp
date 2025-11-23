@@ -36,8 +36,7 @@ TEST_CASE("22020: Section element", "[elements][semantic]") {
 }
 
 TEST_CASE("22030: Article element", "[elements][semantic]") {
-    article a;
-    a << h2("Article Title") << p("Content");
+    article a(h2("Article Title"), p("Content"));
     std::string html = a.html_string();
     CHECK(html.find("<article>") != std::string::npos);
     CHECK(html.find("</article>") != std::string::npos);
@@ -96,8 +95,7 @@ TEST_CASE("22080: Template element", "[elements][semantic][interactive]") {
 }
 
 TEST_CASE("22090: Figure and figcaption", "[elements][semantic]") {
-    figure fig;
-    fig << img("image.jpg") << figcaption("Image caption");
+    figure fig(img("image.jpg"), figcaption("Image caption"));
     std::string html = fig.html_string();
     CHECK(html.find("<figure>") != std::string::npos);
     CHECK(html.find("<figcaption>Image caption</figcaption>") != std::string::npos);

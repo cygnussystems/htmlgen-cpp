@@ -82,14 +82,10 @@ TEST_CASE("70000: All basic elements showcase", "[output][basic]") {
     container << h2("Lists");
 
     container << h3("Unordered List");
-    ul ul1;
-    ul1 << li("First item") << li("Second item") << li("Third item");
-    container << ul1;
+    container << ul(li("First item"), li("Second item"), li("Third item"));
 
     container << h3("Ordered List");
-    ol ol1;
-    ol1 << li("First item") << li("Second item") << li("Third item");
-    container << ol1;
+    container << ol(li("First item"), li("Second item"), li("Third item"));
     container << hr();
 
     // Links and Images
@@ -138,30 +134,30 @@ TEST_CASE("70010: Table examples", "[output][tables]") {
     container << h2("Simple Table");
     table t1;
     t1.cl("table table-bordered");
-    t1.thead << (tr() << th("Name") << th("Age") << th("City"));
-    t1 << (tr() << td("Alice") << td("28") << td("New York"));
-    t1 << (tr() << td("Bob") << td("35") << td("Los Angeles"));
-    t1 << (tr() << td("Charlie") << td("42") << td("Chicago"));
+    t1.thead << tr(th("Name"), th("Age"), th("City"));
+    t1 << tr(td("Alice"), td("28"), td("New York"));
+    t1 << tr(td("Bob"), td("35"), td("Los Angeles"));
+    t1 << tr(td("Charlie"), td("42"), td("Chicago"));
     container << t1;
 
     // Striped table
     container << h2("Striped Table");
     table t2;
     t2.cl("table table-striped");
-    t2.thead << (tr() << th("Product") << th("Price") << th("Quantity") << th("Total"));
-    t2 << (tr() << td("Widget A") << td("$10.00") << td("5") << td("$50.00"));
-    t2 << (tr() << td("Widget B") << td("$15.00") << td("3") << td("$45.00"));
-    t2 << (tr() << td("Widget C") << td("$8.00") << td("10") << td("$80.00"));
-    t2.tfoot << (tr() << td("").colspan(3) << td(strong("$175.00")));
+    t2.thead << tr(th("Product"), th("Price"), th("Quantity"), th("Total"));
+    t2 << tr(td("Widget A"), td("$10.00"), td("5"), td("$50.00"));
+    t2 << tr(td("Widget B"), td("$15.00"), td("3"), td("$45.00"));
+    t2 << tr(td("Widget C"), td("$8.00"), td("10"), td("$80.00"));
+    t2.tfoot << tr(td("").colspan(3), td(strong("$175.00")));
     container << t2;
 
     // Table with colspan and rowspan
     container << h2("Table with Colspan and Rowspan");
     table t3;
     t3.cl("table table-bordered");
-    t3.thead << (tr() << th("Header 1").colspan(2) << th("Header 2"));
-    t3 << (tr() << td("Row 1, Col 1") << td("Row 1, Col 2") << td("Row 1, Col 3").rowspan(2));
-    t3 << (tr() << td("Row 2, Col 1").colspan(2));
+    t3.thead << tr(th("Header 1").colspan(2), th("Header 2"));
+    t3 << tr(td("Row 1, Col 1"), td("Row 1, Col 2"), td("Row 1, Col 3").rowspan(2));
+    t3 << tr(td("Row 2, Col 1").colspan(2));
     container << t3;
 
     // Table with colgroup
@@ -169,14 +165,12 @@ TEST_CASE("70010: Table examples", "[output][tables]") {
     table t4;
     t4.cl("table");
     colgroup cg;
-    col c1; c1.style("background-color: #f0f0f0;");
-    col c2; c2.span(2);
-    cg << c1 << c2;
+    cg << col().style("background-color: #f0f0f0;") << col().span(2);
     t4 << cg;
-    t4.thead << (tr() << th("ID") << th("Name") << th("Value"));
-    t4 << (tr() << td("1") << td("Alpha") << td("100"));
-    t4 << (tr() << td("2") << td("Beta") << td("200"));
-    t4 << (tr() << td("3") << td("Gamma") << td("300"));
+    t4.thead << tr(th("ID"), th("Name"), th("Value"));
+    t4 << tr(td("1"), td("Alpha"), td("100"));
+    t4 << tr(td("2"), td("Beta"), td("200"));
+    t4 << tr(td("3"), td("Gamma"), td("300"));
     container << t4;
 
     pg << container;
@@ -263,9 +257,9 @@ TEST_CASE("70020: Form examples", "[output][forms]") {
     row3 << label("Subject:").for_id("subject");
     select subj;
     subj.name("subject").id("subject").cl("form-control");
-    subj << option("general", "General Inquiry");
-    subj << option("support", "Technical Support");
-    subj << option("sales", "Sales Question");
+    subj << option("general", "General Inquiry")
+         << option("support", "Technical Support")
+         << option("sales", "Sales Question");
     fs << row3 << subj;
 
     html::div row4;
@@ -342,14 +336,13 @@ TEST_CASE("70030: Semantic elements", "[output][semantic]") {
     // Page header
     header hdr;
     hdr << h1("Website Title");
-
     nav navigation;
-    ul nav_list;
-    nav_list << li(anchor("#", "Home"))
-             << li(anchor("#", "About"))
-             << li(anchor("#", "Services"))
-             << li(anchor("#", "Contact"));
-    navigation << nav_list;
+    navigation << ul(
+        li(anchor("#", "Home")),
+        li(anchor("#", "About")),
+        li(anchor("#", "Services")),
+        li(anchor("#", "Contact"))
+    );
     hdr << navigation;
     pg << hdr;
 
@@ -357,36 +350,34 @@ TEST_CASE("70030: Semantic elements", "[output][semantic]") {
     html::main main_content;
 
     // Article
-    article art;
-    art << h2("Article Title");
-    art << p("Published on: ") << time_("November 23, 2024").datetime("2024-11-23");
-
-    section sec1;
-    sec1 << h3("Introduction");
-    sec1 << p("This is the introduction section of the article.");
-    art << sec1;
-
-    section sec2;
-    sec2 << h3("Main Content");
-    sec2 << p("This is the main content section with more details.");
-
-    // Figure
-    figure fig;
-    fig << img("https://via.placeholder.com/300x200", "300");
-    fig << figcaption("Figure 1: A placeholder image");
-    sec2 << fig;
-    art << sec2;
-
+    article art(
+        h2("Article Title"),
+        p("Published on: "),
+        time_("November 23, 2024").datetime("2024-11-23"),
+        section(
+            h3("Introduction"),
+            p("This is the introduction section of the article.")
+        ),
+        section(
+            h3("Main Content"),
+            p("This is the main content section with more details."),
+            figure(
+                img("https://via.placeholder.com/300x200", "300"),
+                figcaption("Figure 1: A placeholder image")
+            )
+        )
+    );
     main_content << art;
 
     // Aside
-    aside side;
-    side << h3("Related Links");
-    ul related;
-    related << li(anchor("#", "Related Article 1"))
-            << li(anchor("#", "Related Article 2"))
-            << li(anchor("#", "Related Article 3"));
-    side << related;
+    aside side(
+        h3("Related Links"),
+        ul(
+            li(anchor("#", "Related Article 1")),
+            li(anchor("#", "Related Article 2")),
+            li(anchor("#", "Related Article 3"))
+        )
+    );
     main_content << side;
 
     pg << main_content;
@@ -423,9 +414,9 @@ TEST_CASE("70040: Interactive elements", "[output][interactive]") {
     container << d1;
 
     details d2;
-    d2.open();
     d2 << summary("This one starts open");
     d2 << p("This content is visible by default because the details element has the open attribute.");
+    d2.open();
     container << d2;
 
     details d3;
@@ -436,25 +427,19 @@ TEST_CASE("70040: Interactive elements", "[output][interactive]") {
     // Dialog
     container << h2("Dialog");
     dialog dlg;
-    dlg.id("myDialog");
-    dlg.open();
     dlg << h3("Dialog Title");
     dlg << p("This is a dialog box. In a real application, it would be controlled by JavaScript.");
-    button close_btn("Close");
-    close_btn.type("button");
-    dlg << close_btn;
+    dlg << button("Close").type("button");
+    dlg.id("myDialog");
+    dlg.open();
     container << dlg;
 
     // Template
     container << h2("Template");
     container << p("Template elements contain content that is not rendered but can be used by JavaScript:");
     template_ tmpl;
+    tmpl << html::div(h3("Card Title"), p("Card content goes here.")).cl("card");
     tmpl.id("card-template");
-    html::div card;
-    card.cl("card");
-    card << h3("Card Title");
-    card << p("Card content goes here.");
-    tmpl << card;
     container << tmpl;
 
     pg << container;
@@ -483,13 +468,13 @@ TEST_CASE("70050: Bootstrap styled page", "[output][bootstrap]") {
     nav_header << brand;
     nav_container << nav_header;
 
-    ul nav_items;
+    ul nav_items(
+        li(anchor("#", "Home")).cl("active"),
+        li(anchor("#", "Products")),
+        li(anchor("#", "About")),
+        li(anchor("#", "Contact"))
+    );
     nav_items.cl("nav navbar-nav");
-    li home; home.cl("active"); home << anchor("#", "Home");
-    nav_items << home;
-    nav_items << li(anchor("#", "Products"));
-    nav_items << li(anchor("#", "About"));
-    nav_items << li(anchor("#", "Contact"));
     nav_container << nav_items;
 
     navbar << nav_container;
@@ -569,10 +554,10 @@ TEST_CASE("70050: Bootstrap styled page", "[output][bootstrap]") {
 
     table orders;
     orders.cl("table table-striped");
-    orders.thead << (tr() << th("#") << th("Customer") << th("Product") << th("Amount") << th("Status"));
-    orders << (tr() << td("1001") << td("John Doe") << td("Widget Pro") << td("$299") << td() << span("Shipped").cl("label label-success"));
-    orders << (tr() << td("1002") << td("Jane Smith") << td("Gadget Plus") << td("$149") << td() << span("Processing").cl("label label-warning"));
-    orders << (tr() << td("1003") << td("Bob Wilson") << td("Tool Kit") << td("$89") << td() << span("Pending").cl("label label-default"));
+    orders.thead << tr(th("#"), th("Customer"), th("Product"), th("Amount"), th("Status"));
+    orders << tr(td("1001"), td("John Doe"), td("Widget Pro"), td("$299"), td(span("Shipped").cl("label label-success")));
+    orders << tr(td("1002"), td("Jane Smith"), td("Gadget Plus"), td("$149"), td(span("Processing").cl("label label-warning")));
+    orders << tr(td("1003"), td("Bob Wilson"), td("Tool Kit"), td("$89"), td(span("Pending").cl("label label-default")));
     table_panel << orders;
 
     cont << table_panel;
@@ -693,12 +678,12 @@ TEST_CASE("70070: Accessibility features", "[output][a11y]") {
     container << h2("ARIA Landmarks");
 
     nav main_nav;
+    main_nav << ul(
+        li(anchor("#", "Home")),
+        li(anchor("#", "Products")),
+        li(anchor("#", "Contact"))
+    );
     main_nav.role("navigation").aria_label("Main navigation");
-    ul nav_list;
-    nav_list << li(anchor("#", "Home"))
-             << li(anchor("#", "Products"))
-             << li(anchor("#", "Contact"));
-    main_nav << nav_list;
     container << main_nav;
 
     // Accessible form
@@ -910,12 +895,12 @@ TEST_CASE("70090: Complete report example", "[output][report]") {
     cont << h2("Top Products");
     table products;
     products.cl("table table-striped table-hover");
-    products.thead << (tr() << th("Rank") << th("Product") << th("Units Sold") << th("Revenue") << th("Growth"));
-    products << (tr() << td("1") << td("Widget Pro") << td("423") << td("$42,300") << td() << span("+23%").cl("text-success"));
-    products << (tr() << td("2") << td("Gadget Plus") << td("356") << td("$35,600") << td() << span("+18%").cl("text-success"));
-    products << (tr() << td("3") << td("Tool Kit") << td("298") << td("$26,820") << td() << span("+12%").cl("text-success"));
-    products << (tr() << td("4") << td("Basic Widget") << td("245") << td("$12,250") << td() << span("-5%").cl("text-danger"));
-    products << (tr() << td("5") << td("Mini Gadget") << td("189") << td("$9,450") << td() << span("+8%").cl("text-success"));
+    products.thead << tr(th("Rank"), th("Product"), th("Units Sold"), th("Revenue"), th("Growth"));
+    products << tr(td("1"), td("Widget Pro"), td("423"), td("$42,300"), td(span("+23%").cl("text-success")));
+    products << tr(td("2"), td("Gadget Plus"), td("356"), td("$35,600"), td(span("+18%").cl("text-success")));
+    products << tr(td("3"), td("Tool Kit"), td("298"), td("$26,820"), td(span("+12%").cl("text-success")));
+    products << tr(td("4"), td("Basic Widget"), td("245"), td("$12,250"), td(span("-5%").cl("text-danger")));
+    products << tr(td("5"), td("Mini Gadget"), td("189"), td("$9,450"), td(span("+8%").cl("text-success")));
     cont << products;
 
     // Regional breakdown

@@ -100,8 +100,7 @@ TEST_CASE("10050: Text formatting elements", "[elements][basic][formatting]") {
 
 TEST_CASE("10060: List elements", "[elements][basic][lists]") {
     SECTION("unordered list") {
-        ul list;
-        list << li("Item 1") << li("Item 2");
+        ul list(li("Item 1"), li("Item 2"));
         std::string html = list.html_string();
         CHECK(html.find("<ul>") != std::string::npos);
         CHECK(html.find("<li>Item 1</li>") != std::string::npos);
@@ -109,8 +108,7 @@ TEST_CASE("10060: List elements", "[elements][basic][lists]") {
         CHECK(html.find("</ul>") != std::string::npos);
     }
     SECTION("ordered list") {
-        ol list;
-        list << li("First") << li("Second");
+        ol list(li("First"), li("Second"));
         std::string html = list.html_string();
         CHECK(html.find("<ol>") != std::string::npos);
         CHECK(html.find("</ol>") != std::string::npos);
@@ -133,6 +131,19 @@ TEST_CASE("10080: Element groups", "[elements][basic][groups]") {
     std::string html = group.html();
     CHECK(html.find("<p>Para 1</p>") != std::string::npos);
     CHECK(html.find("<p>Para 2</p>") != std::string::npos);
+}
+
+TEST_CASE("10085: Div with multiple children using variadic", "[elements][basic][div]") {
+    html::div container(
+        h1("Welcome"),
+        p("Introduction text"),
+        ul(li("First"), li("Second"), li("Third"))
+    );
+    std::string html = container.html_string();
+    CHECK(html.find("<div>") != std::string::npos);
+    CHECK(html.find("<h1>Welcome</h1>") != std::string::npos);
+    CHECK(html.find("<p>Introduction text</p>") != std::string::npos);
+    CHECK(html.find("<ul>") != std::string::npos);
 }
 
 TEST_CASE("10090: Element attributes", "[elements][basic][attributes]") {
