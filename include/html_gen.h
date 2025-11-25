@@ -5,8 +5,8 @@
 *  ====================================================================
 */
 
-#ifndef HTML_TAGS__INCLUDED
-#define HTML_TAGS__INCLUDED
+#ifndef HTML_GEN__INCLUDED
+#define HTML_GEN__INCLUDED
 
 // Core includes - order matters for dependencies
 #include "html_forward.h"

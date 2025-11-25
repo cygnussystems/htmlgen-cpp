@@ -280,12 +280,44 @@ namespace html {
             html::head head;
             std::string preamble;
             bool m_bWriteNewlineAfterTag;
+
+          private:
+            // Dependency management
+            std::set<dependency> m_dependencies;
+            std::vector<std::string> m_head_scripts;
+            std::vector<std::string> m_body_scripts;
+            std::vector<std::string> m_init_scripts;
+            std::set<std::string> m_init_script_keys;  // For deduplication
+            std::vector<std::string> m_styles;         // Embedded CSS
+            dependency_mode m_dependency_mode;
+
           public:
             page();
             virtual ~page();
+
+          public:
+            // Dependency registration methods
+            void require(dependency dep);
+            void add_head_script(const std::string& js);
+            void add_body_script(const std::string& js);
+            void add_on_ready(const std::string& js, const std::string& key = "");
+            void add_style(const std::string& css);
+
+            // Dependency mode
+            void set_dependency_mode(dependency_mode mode);
+            dependency_mode get_dependency_mode() const;
+
+            // Check if dependency is registered
+            bool has_dependency(dependency dep) const;
+
           public:
             virtual element* make_copy()const override;
             virtual void write_html(std::ostream&) override;
+
+          private:
+            void write_dependency_css(std::ostream& _s);
+            void write_dependency_js(std::ostream& _s);
+            void write_init_scripts(std::ostream& _s);
         };
         std::ostream& operator<<(std::ostream& _s, page& _p);
 

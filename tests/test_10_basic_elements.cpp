@@ -6,7 +6,7 @@
 */
 
 #include <catch2/catch_all.hpp>
-#include "../include/html_tags.h"
+#include "../include/html_gen.h"
 
 using namespace html;
 

@@ -5,9 +5,16 @@
 *  ====================================================================
 */
 
-#include "../include/html_tags.h"
+#include "../include/html_gen.h"
+#include "../include/html_gen_resources.h"
 
 namespace html {
+
+        /////////////////////////////////////////////////////////////
+        // Thread-local page context for implicit dependency registration
+        namespace detail {
+            thread_local page* current_page = nullptr;
+        }
 
         /////////////////////////////////////////////////////////////
         // HTML escape utility implementation
@@ -703,10 +710,61 @@ namespace html {
         page::page() {
             preamble = "<!DOCTYPE html>";
             m_bWriteNewlineAfterTag = true;
+            m_dependency_mode = dependency_mode::cdn;  // Default to CDN
+            // Set thread-local context so components can register dependencies
+            detail::current_page = this;
         }
 
         page::~page() {
             m_bWriteNewlineAfterTag = true;
+            // Clear thread-local context
+            if (detail::current_page == this) {
+                detail::current_page = nullptr;
+            }
+        }
+
+        void page::require(dependency dep) {
+            m_dependencies.insert(dep);
+            // Handle bundle dependencies
+            if (dep == dependency::bootstrap_bundle) {
+                m_dependencies.insert(dependency::bootstrap_css);
+                m_dependencies.insert(dependency::bootstrap_js);
+            }
+        }
+
+        void page::add_head_script(const std::string& js) {
+            m_head_scripts.push_back(js);
+        }
+
+        void page::add_body_script(const std::string& js) {
+            m_body_scripts.push_back(js);
+        }
+
+        void page::add_on_ready(const std::string& js, const std::string& key) {
+            // If key provided, use it for deduplication
+            if (!key.empty()) {
+                if (m_init_script_keys.count(key) > 0) {
+                    return;  // Already added
+                }
+                m_init_script_keys.insert(key);
+            }
+            m_init_scripts.push_back(js);
+        }
+
+        void page::add_style(const std::string& css) {
+            m_styles.push_back(css);
+        }
+
+        void page::set_dependency_mode(dependency_mode mode) {
+            m_dependency_mode = mode;
+        }
+
+        dependency_mode page::get_dependency_mode() const {
+            return m_dependency_mode;
+        }
+
+        bool page::has_dependency(dependency dep) const {
+            return m_dependencies.count(dep) > 0;
         }
 
         element* page::make_copy()const {
@@ -714,17 +772,117 @@ namespace html {
             return (element*)nullptr;
         }
 
+        void page::write_dependency_css(std::ostream& _s) {
+            // Write CSS dependencies to head
+            if (m_dependency_mode == dependency_mode::cdn) {
+                // CDN mode - output links
+                if (m_dependencies.count(dependency::bootstrap_css) > 0) {
+                    _s << "<link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css\" rel=\"stylesheet\">" << std::endl;
+                }
+                if (m_dependencies.count(dependency::bootstrap_icons) > 0) {
+                    _s << "<link href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css\" rel=\"stylesheet\">" << std::endl;
+                }
+                // ApexCharts has no separate CSS file
+            } else {
+                // Embedded mode - output inline styles
+                if (m_dependencies.count(dependency::bootstrap_css) > 0) {
+                    _s << "<style>" << std::endl;
+                    _s << resources::bootstrap_css_string();
+                    _s << std::endl << "</style>" << std::endl;
+                }
+                // Note: bootstrap_icons would need icon font files, so keep as CDN
+                if (m_dependencies.count(dependency::bootstrap_icons) > 0) {
+                    _s << "<link href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css\" rel=\"stylesheet\">" << std::endl;
+                }
+                // ApexCharts has no separate CSS file
+            }
+
+            // Write user's embedded styles
+            for (const auto& css : m_styles) {
+                _s << "<style>" << std::endl;
+                _s << css << std::endl;
+                _s << "</style>" << std::endl;
+            }
+        }
+
+        void page::write_dependency_js(std::ostream& _s) {
+            // Write JS dependencies at end of body
+            if (m_dependency_mode == dependency_mode::cdn) {
+                // CDN mode - output script src links
+                if (m_dependencies.count(dependency::apexcharts_js) > 0) {
+                    _s << "<script src=\"https://cdn.jsdelivr.net/npm/apexcharts@3.44.0/dist/apexcharts.min.js\"></script>" << std::endl;
+                }
+                if (m_dependencies.count(dependency::bootstrap_js) > 0) {
+                    _s << "<script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js\"></script>" << std::endl;
+                }
+            } else {
+                // Embedded mode - output inline scripts
+                if (m_dependencies.count(dependency::apexcharts_js) > 0) {
+                    _s << "<script>" << std::endl;
+                    _s << resources::apexcharts_js_string();
+                    _s << std::endl << "</script>" << std::endl;
+                }
+                if (m_dependencies.count(dependency::bootstrap_js) > 0) {
+                    _s << "<script>" << std::endl;
+                    _s << resources::bootstrap_js_string();
+                    _s << std::endl << "</script>" << std::endl;
+                }
+            }
+
+            // Write body scripts
+            for (const auto& script : m_body_scripts) {
+                _s << "<script>" << std::endl;
+                _s << script << std::endl;
+                _s << "</script>" << std::endl;
+            }
+        }
+
+        void page::write_init_scripts(std::ostream& _s) {
+            if (m_init_scripts.empty()) {
+                return;
+            }
+            _s << "<script>" << std::endl;
+            _s << "document.addEventListener('DOMContentLoaded', function() {" << std::endl;
+            for (const auto& script : m_init_scripts) {
+                _s << "    " << script << std::endl;
+            }
+            _s << "});" << std::endl;
+            _s << "</script>" << std::endl;
+        }
+
         void page::write_html(std::ostream& _s) {
             _s << preamble << std::endl;
             _s << "<html>" << std::endl;
-            head.page(this);
-            head.write_html(_s);
+
+            // Write head with dependency CSS
+            _s << "<head>" << std::endl;
+            write_dependency_css(_s);
+            // Write head scripts
+            for (const auto& script : m_head_scripts) {
+                _s << "<script>" << std::endl;
+                _s << script << std::endl;
+                _s << "</script>" << std::endl;
+            }
+            // Write user's head content
+            for (size_t c = 0; c < head.m_elements.size(); c++) {
+                head.m_elements[c]->page(this);
+                head.m_elements[c]->write_html(_s);
+                _s << std::endl;
+            }
+            _s << "</head>" << std::endl;
+
+            // Write body
             _s << "<body>" << std::endl;
             for(size_t c = 0; c < m_elements.size(); c++) {
                 m_elements[c]->page(this);
                 m_elements[c]->write_html(_s);
                 _s << std::endl;
             }
+
+            // Write JS dependencies and init scripts at end of body
+            write_dependency_js(_s);
+            write_init_scripts(_s);
+
             _s << "</body>" << std::endl;
             _s << "</html>" << std::endl;
         }

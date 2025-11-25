@@ -11,18 +11,16 @@
 #include <catch2/catch_all.hpp>
 #include <fstream>
 #include <filesystem>
-#include "../include/html_tags.h"
-#include "../include/bootstrap.h"
-#include "../include/html_resources.h"
+#include "../include/html_gen.h"
+#include "../include/html_gen_charts.h"
+#include "../include/html_gen_resources.h"
 
 using namespace html;
-namespace bs = html::bootstrap;
 
 // Helper to get output directory path
 std::filesystem::path get_output_dir() {
-    std::filesystem::path dir = std::filesystem::current_path();
-    // Navigate to tests/output from build directory
-    dir = dir.parent_path() / "tests" / "output";
+    std::filesystem::path source_file(__FILE__);
+    std::filesystem::path dir = source_file.parent_path() / "output";
     if (!std::filesystem::exists(dir)) {
         std::filesystem::create_directories(dir);
     }
@@ -452,115 +450,128 @@ TEST_CASE("70050: Bootstrap styled page", "[output][bootstrap]") {
     page pg;
     pg.head << title("Bootstrap Styled Page");
     pg.head << style(resources::bootstrap_css_string());
-    pg.head << script(resources::jquery_js_string());
     pg.head << script(resources::bootstrap_js_string());
 
-    // Navigation bar
+    // Navigation bar (Bootstrap 5)
     nav navbar;
-    navbar.cl("navbar navbar-default");
+    navbar.cl("navbar navbar-expand-lg navbar-light bg-light");
     html::div nav_container;
     nav_container.cl("container-fluid");
 
-    html::div nav_header;
-    nav_header.cl("navbar-header");
     anchor brand("Brand");
     brand.cl("navbar-brand").href("#");
-    nav_header << brand;
-    nav_container << nav_header;
+    nav_container << brand;
 
+    html::div nav_collapse;
+    nav_collapse.cl("collapse navbar-collapse");
     ul nav_items(
-        li(anchor("#", "Home")).cl("active"),
-        li(anchor("#", "Products")),
-        li(anchor("#", "About")),
-        li(anchor("#", "Contact"))
+        li(anchor("#", "Home").cl("nav-link active")),
+        li(anchor("#", "Products").cl("nav-link")),
+        li(anchor("#", "About").cl("nav-link")),
+        li(anchor("#", "Contact").cl("nav-link"))
     );
-    nav_items.cl("nav navbar-nav");
-    nav_container << nav_items;
+    nav_items.cl("navbar-nav me-auto mb-2 mb-lg-0");
+    for (size_t i = 0; i < nav_items.size(); i++) {
+        nav_items[i].cl("nav-item");
+    }
+    nav_collapse << nav_items;
+    nav_container << nav_collapse;
 
     navbar << nav_container;
     pg << navbar;
 
     // Main container
-    bs::container cont;
+    html::div cont;
+    cont.cl("container");
 
-    // Page header
+    // Page header (Bootstrap 5)
     html::div page_header;
-    page_header.cl("page-header");
-    page_header << h1("Dashboard") << small_(" Overview");
+    page_header.cl("pb-2 mt-4 mb-4 border-bottom");
+    page_header << h1("Dashboard") << small_(" Overview").cl("text-muted");
     cont << page_header;
 
     // Row with panels
-    bs::row row1;
+    html::div row1;
+    row1.cl("row");
 
-    // Panel 1
-    bs::column col1(4);
-    html::div panel1;
-    panel1.cl("panel panel-primary");
-    html::div panel1_head;
-    panel1_head.cl("panel-heading");
-    panel1_head << h3("Statistics").cl("panel-title");
-    panel1 << panel1_head;
-    html::div panel1_body;
-    panel1_body.cl("panel-body");
-    panel1_body << p("Total Users: ") << strong("1,234");
-    panel1_body << p("Active Today: ") << strong("567");
-    panel1 << panel1_body;
-    col1 << panel1;
+    // Card 1 (Bootstrap 5 - replaces panel)
+    html::div col1;
+    col1.cl("col-md-4 mb-3");
+    html::div card1;
+    card1.cl("card text-bg-primary");
+    html::div card1_head;
+    card1_head.cl("card-header");
+    card1_head << h5("Statistics").cl("card-title mb-0");
+    card1 << card1_head;
+    html::div card1_body;
+    card1_body.cl("card-body");
+    card1_body << p("Total Users: ") << strong("1,234");
+    card1_body << p("Active Today: ") << strong("567");
+    card1 << card1_body;
+    col1 << card1;
     row1 << col1;
 
-    // Panel 2
-    bs::column col2(4);
-    html::div panel2;
-    panel2.cl("panel panel-success");
-    html::div panel2_head;
-    panel2_head.cl("panel-heading");
-    panel2_head << h3("Revenue").cl("panel-title");
-    panel2 << panel2_head;
-    html::div panel2_body;
-    panel2_body.cl("panel-body");
-    panel2_body << p("This Month: ") << strong("$45,678");
-    panel2_body << p("Last Month: ") << strong("$42,123");
-    panel2 << panel2_body;
-    col2 << panel2;
+    // Card 2
+    html::div col2;
+    col2.cl("col-md-4 mb-3");
+    html::div card2;
+    card2.cl("card text-bg-success");
+    html::div card2_head;
+    card2_head.cl("card-header");
+    card2_head << h5("Revenue").cl("card-title mb-0");
+    card2 << card2_head;
+    html::div card2_body;
+    card2_body.cl("card-body");
+    card2_body << p("This Month: ") << strong("$45,678");
+    card2_body << p("Last Month: ") << strong("$42,123");
+    card2 << card2_body;
+    col2 << card2;
     row1 << col2;
 
-    // Panel 3
-    bs::column col3(4);
-    html::div panel3;
-    panel3.cl("panel panel-info");
-    html::div panel3_head;
-    panel3_head.cl("panel-heading");
-    panel3_head << h3("Tasks").cl("panel-title");
-    panel3 << panel3_head;
-    html::div panel3_body;
-    panel3_body.cl("panel-body");
-    panel3_body << p("Completed: ") << strong("89%");
-    progress task_prog;
-    task_prog.value(89).max(100);
-    panel3_body << task_prog;
-    panel3 << panel3_body;
-    col3 << panel3;
+    // Card 3
+    html::div col3;
+    col3.cl("col-md-4 mb-3");
+    html::div card3;
+    card3.cl("card text-bg-info");
+    html::div card3_head;
+    card3_head.cl("card-header");
+    card3_head << h5("Tasks").cl("card-title mb-0");
+    card3 << card3_head;
+    html::div card3_body;
+    card3_body.cl("card-body");
+    card3_body << p("Completed: ") << strong("89%");
+    html::div prog_container;
+    prog_container.cl("progress");
+    html::div prog_bar;
+    prog_bar.cl("progress-bar").style("width: 89%").role("progressbar");
+    prog_bar.add_attr("aria-valuenow", "89");
+    prog_bar.add_attr("aria-valuemin", "0");
+    prog_bar.add_attr("aria-valuemax", "100");
+    prog_container << prog_bar;
+    card3_body << prog_container;
+    card3 << card3_body;
+    col3 << card3;
     row1 << col3;
 
     cont << row1;
 
-    // Table in a panel
-    html::div table_panel;
-    table_panel.cl("panel panel-default");
-    html::div table_panel_head;
-    table_panel_head.cl("panel-heading");
-    table_panel_head << h3("Recent Orders").cl("panel-title");
-    table_panel << table_panel_head;
+    // Table in a card (Bootstrap 5)
+    html::div table_card;
+    table_card.cl("card mt-4");
+    html::div table_card_head;
+    table_card_head.cl("card-header");
+    table_card_head << h5("Recent Orders").cl("card-title mb-0");
+    table_card << table_card_head;
 
     table orders;
-    orders.cl("table table-striped");
+    orders.cl("table table-striped mb-0");
     orders.thead << tr(th("#"), th("Customer"), th("Product"), th("Amount"), th("Status"));
-    orders << tr(td("1001"), td("John Doe"), td("Widget Pro"), td("$299"), td(span("Shipped").cl("label label-success")));
-    orders << tr(td("1002"), td("Jane Smith"), td("Gadget Plus"), td("$149"), td(span("Processing").cl("label label-warning")));
-    orders << tr(td("1003"), td("Bob Wilson"), td("Tool Kit"), td("$89"), td(span("Pending").cl("label label-default")));
-    table_panel << orders;
+    orders << tr(td("1001"), td("John Doe"), td("Widget Pro"), td("$299"), td(span("Shipped").cl("badge bg-success")));
+    orders << tr(td("1002"), td("Jane Smith"), td("Gadget Plus"), td("$149"), td(span("Processing").cl("badge bg-warning text-dark")));
+    orders << tr(td("1003"), td("Bob Wilson"), td("Tool Kit"), td("$89"), td(span("Pending").cl("badge bg-secondary")));
+    table_card << orders;
 
-    cont << table_panel;
+    cont << table_card;
 
     // Alerts
     cont << h2("Alerts");
@@ -581,11 +592,10 @@ TEST_CASE("70050: Bootstrap styled page", "[output][bootstrap]") {
 
     pg << cont;
 
-    // Footer
+    // Footer (Bootstrap 5)
     footer ftr;
-    ftr.cl("text-center");
-    ftr.style("margin-top: 30px; padding: 20px; background-color: #f5f5f5;");
-    ftr << p("Generated with CPP_HTML_GEN Library");
+    ftr.cl("text-center mt-5 py-4 bg-light");
+    ftr << p("Generated with CPP_HTML_GEN Library").cl("text-muted mb-0");
     pg << ftr;
 
     save_page("06_bootstrap.html", pg);
@@ -759,26 +769,24 @@ TEST_CASE("70070: Accessibility features", "[output][a11y]") {
     CHECK(std::filesystem::exists(get_output_dir() / "08_accessibility.html"));
 }
 
-TEST_CASE("70080: Charts with C3.js", "[output][charts]") {
+TEST_CASE("70080: Charts with ApexCharts", "[output][charts]") {
     page pg;
-    pg.head << title("Charts with C3.js");
+    pg.head << title("Charts with ApexCharts");
     pg.head << style(resources::bootstrap_css_string());
-    pg.head << style(resources::c3_css_string());
-    pg.head << script(resources::d3_js_string());
-    pg.head << script(resources::c3_js_string());
+    pg.head << script(resources::apexcharts_js_string());
 
     html::div container;
     container.cl("container");
 
-    container << h1("Charts with C3.js");
-    container << p("This page demonstrates the built-in chart support using C3.js library.");
+    container << h1("Charts with ApexCharts");
+    container << p("This page demonstrates the built-in chart support using ApexCharts library.");
 
     // Line chart
     container << h2("Line Chart");
     chart::line_chart line;
-    line.m_sID = "line_chart";
-    line.m_sDataName = "Sales";
-    line.m_sColor = "#3498db";
+    line.m_id = "line_chart";
+    line.m_data_name = "Sales";
+    line.m_color = "#3498db";
     for (double val : {10.0, 25.0, 15.0, 30.0, 22.0, 35.0, 28.0}) {
         line.add(val);
     }
@@ -787,8 +795,8 @@ TEST_CASE("70080: Charts with C3.js", "[output][charts]") {
     // Bar chart
     container << h2("Bar Chart");
     chart::bar_chart bar;
-    bar.m_sID = "bar_chart";
-    bar.m_sDataName = "Revenue";
+    bar.m_id = "bar_chart";
+    bar.m_data_name = "Revenue";
     bar.add("Jan", 120.0);
     bar.add("Feb", 180.0);
     bar.add("Mar", 150.0);
@@ -799,9 +807,9 @@ TEST_CASE("70080: Charts with C3.js", "[output][charts]") {
     // Timeseries chart
     container << h2("Timeseries Chart");
     chart::timeseries_line_chart ts;
-    ts.m_sID = "ts_chart";
-    ts.m_sDataName = "Temperature";
-    ts.m_sColor = "#e74c3c";
+    ts.m_id = "ts_chart";
+    ts.m_data_name = "Temperature";
+    ts.m_color = "#e74c3c";
     ts.add(std::chrono::system_clock::now() - std::chrono::hours(24*6), 20.0);
     ts.add(std::chrono::system_clock::now() - std::chrono::hours(24*5), 22.0);
     ts.add(std::chrono::system_clock::now() - std::chrono::hours(24*4), 19.0);
@@ -821,9 +829,7 @@ TEST_CASE("70090: Complete report example", "[output][report]") {
     page pg;
     pg.head << title("Monthly Sales Report - Q4 2024");
     pg.head << style(resources::bootstrap_css_string());
-    pg.head << style(resources::c3_css_string());
-    pg.head << script(resources::d3_js_string());
-    pg.head << script(resources::c3_js_string());
+    pg.head << script(resources::apexcharts_js_string());
 
     // Custom styles
     pg.head << style(R"(
@@ -840,12 +846,15 @@ TEST_CASE("70090: Complete report example", "[output][report]") {
     report_header << p("Q4 2024 - November Analysis");
     pg << report_header;
 
-    bs::container cont;
+    html::div cont;
+    cont.cl("container");
 
     // Summary metrics
-    bs::row metrics_row;
+    html::div metrics_row;
+    metrics_row.cl("row");
 
-    bs::column m1(3);
+    html::div m1;
+    m1.cl("col-md-3");
     html::div metric1;
     metric1.cl("metric-card");
     metric1 << html::div().cl("metric-value") << text("$127,450");
@@ -853,7 +862,8 @@ TEST_CASE("70090: Complete report example", "[output][report]") {
     m1 << metric1;
     metrics_row << m1;
 
-    bs::column m2(3);
+    html::div m2;
+    m2.cl("col-md-3");
     html::div metric2;
     metric2.cl("metric-card");
     metric2 << html::div().cl("metric-value") << text("1,847");
@@ -861,7 +871,8 @@ TEST_CASE("70090: Complete report example", "[output][report]") {
     m2 << metric2;
     metrics_row << m2;
 
-    bs::column m3(3);
+    html::div m3;
+    m3.cl("col-md-3");
     html::div metric3;
     metric3.cl("metric-card");
     metric3 << html::div().cl("metric-value") << text("$69.00");
@@ -869,7 +880,8 @@ TEST_CASE("70090: Complete report example", "[output][report]") {
     m3 << metric3;
     metrics_row << m3;
 
-    bs::column m4(3);
+    html::div m4;
+    m4.cl("col-md-3");
     html::div metric4;
     metric4.cl("metric-card");
     metric4 << html::div().cl("metric-value") << text("+15%");
@@ -883,9 +895,9 @@ TEST_CASE("70090: Complete report example", "[output][report]") {
     // Sales chart
     cont << h2("Sales Trend");
     chart::line_chart sales_chart;
-    sales_chart.m_sID = "sales_trend";
-    sales_chart.m_sDataName = "Revenue ($)";
-    sales_chart.m_sColor = "#3498db";
+    sales_chart.m_id = "sales_trend";
+    sales_chart.m_data_name = "Revenue ($)";
+    sales_chart.m_color = "#3498db";
     for (double val : {28500.0, 31200.0, 29800.0, 37950.0}) {
         sales_chart.add(val);
     }
@@ -906,8 +918,8 @@ TEST_CASE("70090: Complete report example", "[output][report]") {
     // Regional breakdown
     cont << h2("Regional Performance");
     chart::bar_chart region_chart;
-    region_chart.m_sID = "region_perf";
-    region_chart.m_sDataName = "Revenue ($K)";
+    region_chart.m_id = "region_perf";
+    region_chart.m_data_name = "Revenue ($K)";
     region_chart.add("North", 45.2);
     region_chart.add("South", 38.7);
     region_chart.add("East", 28.4);

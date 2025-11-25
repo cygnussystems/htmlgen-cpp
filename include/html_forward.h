@@ -15,8 +15,47 @@
 #include <sstream>
 #include <stdexcept>
 #include <cassert>
+#include <set>
 
 namespace html {
+
+        //=============================================================================
+        // DEPENDENCY MANAGEMENT
+        //=============================================================================
+
+        // Dependencies that components can require
+        enum class dependency {
+            // CSS
+            bootstrap_css,
+            bootstrap_icons,
+
+            // JavaScript
+            bootstrap_js,
+            apexcharts_js,
+
+            // Combined bundles
+            bootstrap_bundle  // CSS + JS
+        };
+
+        // How dependencies are included in output
+        enum class dependency_mode {
+            cdn,        // Use CDN links (default, smaller output)
+            embedded    // Embed full CSS/JS (self-contained, larger output)
+        };
+
+        // Forward declarations
+        class page;
+
+        // Internal detail namespace for thread-local page context
+        namespace detail {
+            // Thread-local pointer to current page being built
+            // This allows components to register dependencies without explicit page reference
+            extern thread_local page* current_page;
+        }
+
+        //=============================================================================
+        // ELEMENT TYPES
+        //=============================================================================
 
         enum element_t {
             undefined_t = 0,
@@ -137,8 +176,7 @@ namespace html {
             canvas_t
         };
 
-        // Forward declarations
-        class page;
+        // Forward declarations (page declared above with dependency system)
         class element_group;
         class element;
 

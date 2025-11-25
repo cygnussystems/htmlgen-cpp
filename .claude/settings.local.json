@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(findstr:*)",
+      "WebSearch",
+      "Bash(dir \"C:\\Users\\ritte\\_PR_DEV_\\DEV_CPP\\CPP_HTML_GEN\\tests\\output\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
