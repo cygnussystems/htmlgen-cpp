@@ -1,7 +1,7 @@
 /*  ===================================================================
-*                      HTML Generator Library
-*               Copyright 1999 - 2024 by Peter Ritter
-*                A L L   R I G H T S   R E S E R V E D
+*                         HtmlGen++
+*            Copyright (c) 2015-2024 Peter Ritter
+*                  Licensed under MIT License
 *  ====================================================================
 */
 
@@ -32,6 +32,7 @@ namespace html {
                 add_children(std::forward<Args>(args)...);
             }
             virtual ~header() { ; }
+            HTML_FLUENT_METHODS(header)
             virtual element* make_copy()const override {
                 header* ptr = new header();
                 ptr->copy(*this);
@@ -55,6 +56,7 @@ namespace html {
                 add_children(std::forward<Args>(args)...);
             }
             virtual ~footer() { ; }
+            HTML_FLUENT_METHODS(footer)
             virtual element* make_copy()const override {
                 footer* ptr = new footer();
                 ptr->copy(*this);
@@ -78,6 +80,7 @@ namespace html {
                 add_children(std::forward<Args>(args)...);
             }
             virtual ~section() { ; }
+            HTML_FLUENT_METHODS(section)
             virtual element* make_copy()const override {
                 section* ptr = new section();
                 ptr->copy(*this);
@@ -101,6 +104,7 @@ namespace html {
                 add_children(std::forward<Args>(args)...);
             }
             virtual ~article() { ; }
+            HTML_FLUENT_METHODS(article)
             virtual element* make_copy()const override {
                 article* ptr = new article();
                 ptr->copy(*this);
@@ -124,6 +128,7 @@ namespace html {
                 add_children(std::forward<Args>(args)...);
             }
             virtual ~aside() { ; }
+            HTML_FLUENT_METHODS(aside)
             virtual element* make_copy()const override {
                 aside* ptr = new aside();
                 ptr->copy(*this);
@@ -147,6 +152,7 @@ namespace html {
                 add_children(std::forward<Args>(args)...);
             }
             virtual ~main() { ; }
+            HTML_FLUENT_METHODS(main)
             virtual element* make_copy()const override {
                 html::main* ptr = new html::main();
                 ptr->copy(*this);
@@ -174,6 +180,7 @@ namespace html {
                 add_children(std::forward<Args>(args)...);
             }
             virtual ~figure() { ; }
+            HTML_FLUENT_METHODS(figure)
             virtual element* make_copy()const override {
                 figure* ptr = new figure();
                 ptr->copy(*this);
@@ -188,6 +195,7 @@ namespace html {
                 element::m_type = figcaption_t;
                 add(text(_s));
             }
+            HTML_FLUENT_METHODS(figcaption)
             virtual ~figcaption() { ; }
             virtual element* make_copy()const override {
                 figcaption* ptr = new figcaption();
@@ -203,6 +211,7 @@ namespace html {
                 element::m_type = time_t;
                 add(text(_s));
             }
+            HTML_FLUENT_METHODS(time_)
             time_& datetime(const std::string& dt) { add_attr("datetime", dt); return *this; }
             virtual ~time_() { ; }
             virtual element* make_copy()const override {
@@ -319,6 +328,15 @@ namespace html {
                 m_newline_after_element = true;
                 add(text(_s));
             }
+            // Variadic constructor for nested children
+            template<typename... Args, typename = std::enable_if_t<(sizeof...(Args) > 1)>>
+            blockquote(Args&&... args) {
+                element::m_type = blockquote_t;
+                m_newline_after_tag = true;
+                m_newline_after_element = true;
+                add_children(std::forward<Args>(args)...);
+            }
+            HTML_FLUENT_METHODS(blockquote)
             blockquote& cite(const std::string& url) { add_attr("cite", url); return *this; }
             virtual ~blockquote() { ; }
             virtual element* make_copy()const override {
@@ -396,6 +414,15 @@ namespace html {
                 m_newline_after_tag = true;
                 m_newline_after_element = true;
             }
+            // Variadic constructor for nested children
+            template<typename... Args, typename = std::enable_if_t<(sizeof...(Args) > 0)>>
+            address(Args&&... args) {
+                element::m_type = address_t;
+                m_newline_after_tag = true;
+                m_newline_after_element = true;
+                add_children(std::forward<Args>(args)...);
+            }
+            HTML_FLUENT_METHODS(address)
             virtual ~address() { ; }
             virtual element* make_copy()const override {
                 address* ptr = new address();

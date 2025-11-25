@@ -1,7 +1,7 @@
 /*  ===================================================================
-*                      HTML Generator Library
-*               Copyright 1999 - 2024 by Peter Ritter
-*                A L L   R I G H T S   R E S E R V E D
+*                         HtmlGen++
+*            Copyright (c) 2015-2024 Peter Ritter
+*                  Licensed under MIT License
 *  ====================================================================
 */
 
@@ -68,6 +68,9 @@ namespace html {
                 if(!_width.empty())
                 { width(_width); }
             }
+            HTML_FLUENT_METHODS(img)
+            img& loading(const std::string& l) { add_attr("loading", l); return *this; }
+            img& decoding(const std::string& d) { add_attr("decoding", d); return *this; }
             virtual ~img() { ; }
           public:
             virtual element* make_copy()const override {
@@ -184,6 +187,13 @@ namespace html {
                 element::m_type = a_t;
                 href(_href);
                 add(text(_text));
+            }
+            HTML_FLUENT_METHODS(anchor)
+            anchor& target(const std::string& t) { add_attr("target", t); return *this; }
+            anchor& download(const std::string& d = "") {
+                if (d.empty()) add_attr("download", "download");
+                else add_attr("download", d);
+                return *this;
             }
             virtual ~anchor() { ; }
           public:

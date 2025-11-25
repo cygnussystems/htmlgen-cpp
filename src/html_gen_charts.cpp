@@ -1,7 +1,7 @@
 /*  ===================================================================
-*                      HTML Generator Library
-*               Copyright 1999 - 2024 by Peter Ritter
-*                A L L   R I G H T S   R E S E R V E D
+*                         HtmlGen++
+*            Copyright (c) 2015-2024 Peter Ritter
+*                  Licensed under MIT License
 *  ====================================================================
 */
 

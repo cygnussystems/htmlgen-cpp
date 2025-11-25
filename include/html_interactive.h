@@ -1,7 +1,7 @@
 /*  ===================================================================
-*                      HTML Generator Library
-*               Copyright 1999 - 2024 by Peter Ritter
-*                A L L   R I G H T S   R E S E R V E D
+*                         HtmlGen++
+*            Copyright (c) 2015-2024 Peter Ritter
+*                  Licensed under MIT License
 *  ====================================================================
 */
 
@@ -23,6 +23,15 @@ namespace html {
                 m_newline_after_tag = true;
                 m_newline_after_element = true;
             }
+            // Variadic constructor for nested children (summary + content)
+            template<typename... Args, typename = std::enable_if_t<(sizeof...(Args) > 0)>>
+            details(Args&&... args) {
+                element::m_type = details_t;
+                m_newline_after_tag = true;
+                m_newline_after_element = true;
+                add_children(std::forward<Args>(args)...);
+            }
+            HTML_FLUENT_METHODS(details)
             details& open() { add_attr("open", "open"); return *this; }
             virtual ~details() { ; }
             virtual element* make_copy()const override {
@@ -39,6 +48,7 @@ namespace html {
                 element::m_type = summary_t;
                 add(text(_s));
             }
+            HTML_FLUENT_METHODS(summary)
             virtual ~summary() { ; }
             virtual element* make_copy()const override {
                 summary* ptr = new summary();
@@ -54,6 +64,15 @@ namespace html {
                 m_newline_after_tag = true;
                 m_newline_after_element = true;
             }
+            // Variadic constructor for nested children
+            template<typename... Args, typename = std::enable_if_t<(sizeof...(Args) > 0)>>
+            dialog(Args&&... args) {
+                element::m_type = dialog_t;
+                m_newline_after_tag = true;
+                m_newline_after_element = true;
+                add_children(std::forward<Args>(args)...);
+            }
+            HTML_FLUENT_METHODS(dialog)
             dialog& open() { add_attr("open", "open"); return *this; }
             virtual ~dialog() { ; }
             virtual element* make_copy()const override {
@@ -70,6 +89,7 @@ namespace html {
                 m_newline_after_tag = true;
                 m_newline_after_element = true;
             }
+            HTML_FLUENT_METHODS(template_)
             virtual ~template_() { ; }
             virtual element* make_copy()const override {
                 template_* ptr = new template_();

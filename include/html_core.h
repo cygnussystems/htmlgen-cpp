@@ -1,7 +1,7 @@
 /*  ===================================================================
-*                      HTML Generator Library
-*               Copyright 1999 - 2024 by Peter Ritter
-*                A L L   R I G H T S   R E S E R V E D
+*                         HtmlGen++
+*            Copyright (c) 2015-2024 Peter Ritter
+*                  Licensed under MIT License
 *  ====================================================================
 */
 
@@ -238,6 +238,25 @@ namespace html {
         };
 
         std::ostream& operator<<(std::ostream&, html::element&);
+
+        //=============================================================================
+        // Fluent Method Override Macro
+        // Use this in derived classes to enable full method chaining.
+        // Example: input().type("email").name("foo").id("bar").required()
+        //=============================================================================
+        #define HTML_FLUENT_METHODS(DerivedClass) \
+            DerivedClass& id(const std::string& s) { element::id(s); return *this; } \
+            DerivedClass& cl(const std::string& s) { element::cl(s); return *this; } \
+            DerivedClass& add_cl(const std::string& s) { element::add_cl(s); return *this; } \
+            DerivedClass& style(const std::string& s) { element::style(s); return *this; } \
+            DerivedClass& type(const std::string& s) { element::type(s); return *this; } \
+            DerivedClass& data_id(const std::string& s) { element::data_id(s); return *this; } \
+            DerivedClass& role(const std::string& s) { element::role(s); return *this; } \
+            DerivedClass& hidden(bool b = true) { element::hidden(b); return *this; } \
+            DerivedClass& tabindex(int i) { element::tabindex(i); return *this; } \
+            DerivedClass& title(const std::string& s) { element::title(s); return *this; } \
+            DerivedClass& aria_label(const std::string& s) { element::aria_label(s); return *this; } \
+            DerivedClass& data(const std::string& n, const std::string& v) { element::data(n, v); return *this; }
 
         /////////////////////////////////////////////////////////////////////////////////////
         // Page head

@@ -23,7 +23,6 @@ int main(int argc, char* argv[]) {
 }
 
 /*
-
   How to see leak reports:
   When you run the tests in Visual Studio or CLion (Debug
   build), if there are any memory leaks, you'll see output like:
@@ -32,6 +31,4 @@ int main(int argc, char* argv[]) {
   {142} normal block at 0x00000123456789AB, 64 bytes long.
    Data: <                > CD CD CD CD CD CD CD CD
   Object dump complete.
-
-
  */

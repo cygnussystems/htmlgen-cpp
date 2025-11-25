@@ -1,7 +1,7 @@
 /*  ===================================================================
-*                      HTML Generator Library
-*               Copyright 1999 - 2024 by Peter Ritter
-*                A L L   R I G H T S   R E S E R V E D
+*                         HtmlGen++
+*            Copyright (c) 2015-2024 Peter Ritter
+*                  Licensed under MIT License
 *  ====================================================================
 */
 
@@ -42,6 +42,7 @@ namespace html {
                 add_children(std::forward<Args>(args)...);
             }
             virtual ~div() { ; }
+            HTML_FLUENT_METHODS(div)
             virtual element* make_copy()const override {
                 div* ptr = new div();
                 ptr->copy(*this);
@@ -75,6 +76,7 @@ namespace html {
                 add_children(std::forward<Args>(args)...);
             }
             virtual ~nav() { ; }
+            HTML_FLUENT_METHODS(nav)
             virtual element* make_copy()const override {
                 nav* ptr = new nav();
                 ptr->copy(*this);
@@ -98,6 +100,7 @@ namespace html {
                 add(_e);
             }
             virtual ~h1() { ; }
+            HTML_FLUENT_METHODS(h1)
             virtual element* make_copy()const override {
                 h1* ptr = new h1();
                 ptr->copy(*this);
@@ -119,6 +122,7 @@ namespace html {
                 add(_e);
             }
             virtual ~h2() { ; }
+            HTML_FLUENT_METHODS(h2)
             virtual element* make_copy()const override {
                 h2* ptr = new h2();
                 ptr->copy(*this);
@@ -140,6 +144,7 @@ namespace html {
                 add(_e);
             }
             virtual ~h3() { ; }
+            HTML_FLUENT_METHODS(h3)
             virtual element* make_copy()const override {
                 h3* ptr = new h3();
                 ptr->copy(*this);
@@ -161,6 +166,7 @@ namespace html {
                 add(_e);
             }
             virtual ~h4() { ; }
+            HTML_FLUENT_METHODS(h4)
             virtual element* make_copy()const override {
                 h4* ptr = new h4();
                 ptr->copy(*this);
@@ -182,6 +188,7 @@ namespace html {
                 add(_e);
             }
             virtual ~h5() { ; }
+            HTML_FLUENT_METHODS(h5)
             virtual element* make_copy()const override {
                 h5* ptr = new h5();
                 ptr->copy(*this);
@@ -203,6 +210,7 @@ namespace html {
                 add(_e);
             }
             virtual ~h6() { ; }
+            HTML_FLUENT_METHODS(h6)
             virtual element* make_copy()const override {
                 h6* ptr = new h6();
                 ptr->copy(*this);
@@ -234,6 +242,7 @@ namespace html {
                 add_children(std::forward<Args>(args)...);
             }
             virtual ~p() { ; }
+            HTML_FLUENT_METHODS(p)
             virtual element* make_copy()const override {
                 p* ptr = new html::p();
                 ptr->copy(*this);
@@ -251,6 +260,7 @@ namespace html {
                 add(text(_s));
             }
             virtual ~em() { ; }
+            HTML_FLUENT_METHODS(em)
             virtual element* make_copy()const override {
                 em* ptr = new html::em();
                 ptr->copy(*this);
@@ -277,6 +287,7 @@ namespace html {
             }
 
             virtual ~strong() { ; }
+            HTML_FLUENT_METHODS(strong)
             virtual element* make_copy()const override {
                 strong* ptr = new html::strong();
                 ptr->copy(*this);
@@ -298,6 +309,7 @@ namespace html {
                 add(_e);
             }
             virtual ~b() { ; }
+            HTML_FLUENT_METHODS(b)
             virtual element* make_copy()const override {
                 html::b* ptr = new html::b();
                 ptr->copy(*this);
@@ -318,6 +330,7 @@ namespace html {
                 add(text(_s));
             }
             virtual ~small_() { ; }
+            HTML_FLUENT_METHODS(small_)
             virtual element* make_copy()const override {
                 small_* ptr = new html::small_();
                 ptr->copy(*this);
@@ -334,6 +347,7 @@ namespace html {
                 element::m_type = span_t;
                 add(text(_s));
             }
+            HTML_FLUENT_METHODS(span)
             virtual ~span() { ; }
             virtual element* make_copy()const override {
                 span* ptr = new html::span();
@@ -361,6 +375,7 @@ namespace html {
             }
 
             virtual ~ul() { ; }
+            HTML_FLUENT_METHODS(ul)
             virtual element* make_copy()const override {
                 ul* ptr = new html::ul();
                 ptr->copy(*this);
@@ -383,6 +398,7 @@ namespace html {
             }
 
             virtual ~ol() { ; }
+            HTML_FLUENT_METHODS(ol)
             virtual element* make_copy()const override {
                 ol* ptr = new html::ol();
                 ptr->copy(*this);
@@ -418,6 +434,7 @@ namespace html {
                 add_children(std::forward<Args>(args)...);
             }
             virtual ~li() { ; }
+            HTML_FLUENT_METHODS(li)
             virtual element* make_copy()const override {
                 li* ptr = new html::li();
                 ptr->copy(*this);
@@ -435,6 +452,7 @@ namespace html {
                 add(text(_s));
             }
             virtual ~textarea() { ; }
+            HTML_FLUENT_METHODS(textarea)
             virtual element* make_copy()const override {
                 textarea* ptr = new html::textarea();
                 ptr->copy(*this);

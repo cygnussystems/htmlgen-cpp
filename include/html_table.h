@@ -1,7 +1,7 @@
 /*  ===================================================================
-*                      HTML Generator Library
-*               Copyright 1999 - 2024 by Peter Ritter
-*                A L L   R I G H T S   R E S E R V E D
+*                         HtmlGen++
+*            Copyright (c) 2015-2024 Peter Ritter
+*                  Licensed under MIT License
 *  ====================================================================
 */
 
@@ -33,8 +33,10 @@ namespace html {
                 add(std::move(_e));
             }
             virtual ~td() { ; }
+            HTML_FLUENT_METHODS(td)
             td& colspan(int n) { add_attr("colspan", std::to_string(n)); return *this; }
             td& rowspan(int n) { add_attr("rowspan", std::to_string(n)); return *this; }
+            td& headers(const std::string& h) { add_attr("headers", h); return *this; }
             virtual element* make_copy()const override {
                 td* ptr = new html::td();
                 ptr->copy(*this);
@@ -61,6 +63,7 @@ namespace html {
                 add_children(std::forward<Args>(args)...);
             }
             virtual ~tr() { ; }
+            HTML_FLUENT_METHODS(tr)
 
             virtual element* make_copy()const override {
                 tr* ptr = new tr();
@@ -123,10 +126,12 @@ namespace html {
                 add(text(_s));
             }
             virtual ~th() { ; }
+            HTML_FLUENT_METHODS(th)
             th& scope(const std::string& s) { add_attr("scope", s); return *this; }
             th& colspan(int n) { add_attr("colspan", std::to_string(n)); return *this; }
             th& rowspan(int n) { add_attr("rowspan", std::to_string(n)); return *this; }
             th& abbr(const std::string& s) { add_attr("abbr", s); return *this; }
+            th& headers(const std::string& h) { add_attr("headers", h); return *this; }
 
             virtual element* make_copy()const override {
                 th* ptr = new th();
@@ -153,6 +158,7 @@ namespace html {
                 add_children(std::forward<Args>(args)...);
             }
             virtual ~tbody() { ; }
+            HTML_FLUENT_METHODS(tbody)
 
             virtual element* make_copy()const override {
                 tbody* ptr = new tbody();
@@ -179,6 +185,7 @@ namespace html {
                 add_children(std::forward<Args>(args)...);
             }
             virtual ~thead() { ; }
+            HTML_FLUENT_METHODS(thead)
 
             virtual element* make_copy()const override {
                 thead* ptr = new thead();
@@ -205,6 +212,7 @@ namespace html {
                 add_children(std::forward<Args>(args)...);
             }
             virtual ~tfoot() { ; }
+            HTML_FLUENT_METHODS(tfoot)
 
             virtual element* make_copy()const override {
                 tfoot* ptr = new tfoot();
@@ -220,7 +228,22 @@ namespace html {
                 m_newline_after_tag = true;
                 m_newline_after_element = true;
             }
+            caption(const std::string& _s) {
+                m_type = caption_t;
+                m_newline_after_tag = true;
+                m_newline_after_element = true;
+                add(text(_s));
+            }
+            // Variadic constructor for nested children
+            template<typename... Args, typename = std::enable_if_t<(sizeof...(Args) > 1)>>
+            caption(Args&&... args) {
+                m_type = caption_t;
+                m_newline_after_tag = true;
+                m_newline_after_element = true;
+                add_children(std::forward<Args>(args)...);
+            }
             virtual ~caption() { ; }
+            HTML_FLUENT_METHODS(caption)
 
             virtual element* make_copy()const override {
                 caption* ptr = new caption();
@@ -252,6 +275,7 @@ namespace html {
                 add_children(std::forward<Args>(args)...);
             }
             virtual ~table() { ; }
+            HTML_FLUENT_METHODS(table)
           public:
             virtual void write_html(std::ostream& _s)override {
                 element::write_open_tag(_s);
@@ -298,7 +322,17 @@ namespace html {
                 m_newline_after_tag = true;
                 m_newline_after_element = true;
             }
+            // Variadic constructor for nested col elements
+            template<typename... Args, typename = std::enable_if_t<(sizeof...(Args) > 0)>>
+            colgroup(Args&&... args) {
+                element::m_type = colgroup_t;
+                m_newline_after_tag = true;
+                m_newline_after_element = true;
+                add_children(std::forward<Args>(args)...);
+            }
+            HTML_FLUENT_METHODS(colgroup)
             colgroup& span(int n) { add_attr("span", std::to_string(n)); return *this; }
+            colgroup& span_attr(int n) { add_attr("span", std::to_string(n)); return *this; }
             virtual ~colgroup() { ; }
             virtual element* make_copy()const override {
                 colgroup* ptr = new colgroup();
@@ -314,7 +348,9 @@ namespace html {
                 element::m_has_closing_tag = false;
                 element::m_is_container = false;
             }
+            HTML_FLUENT_METHODS(col)
             col& span(int n) { add_attr("span", std::to_string(n)); return *this; }
+            col& span_attr(int n) { add_attr("span", std::to_string(n)); return *this; }
             virtual ~col() { ; }
             virtual element* make_copy()const override {
                 col* ptr = new col();
