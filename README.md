@@ -77,9 +77,32 @@ auto content = div(
 ).cl("container");
 ```
 
-### No Dependencies
+### Batteries Included
 
-The core library is completely standalone. Just include the headers and go.
+Bootstrap CSS/JS and ApexCharts are **embedded** - no CDN required, no external files. Generate fully self-contained HTML:
+
+```cpp
+page pg;
+pg.embedded_mode(true);  // Embed all resources inline
+
+pg << div(
+    h1("Dashboard"),
+    div(
+        button("Primary").cl("btn btn-primary"),
+        button("Success").cl("btn btn-success")
+    ).cl("d-flex gap-2")
+).cl("container mt-4");
+
+// Bootstrap CSS & JS automatically included!
+std::ofstream("dashboard.html") << pg;
+```
+
+Or use CDN mode for smaller file sizes:
+
+```cpp
+pg.require(dependency::bootstrap_css);
+pg.require(dependency::bootstrap_js);
+```
 
 ### Flexible
 
